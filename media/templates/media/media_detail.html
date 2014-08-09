@@ -1,0 +1,10 @@
+{% extends "_layouts/base.html" %}
+
+{% block page_title %}{{ media.title }} | {% endblock %}
+
+{% block page_content %}
+<h2>{{ media.title }}</h2>
+{{ media.content|linebreaks }}
+<p>{{ media.updated_at }}</p>
+<p><a href="{% url 'media:list' %}">&larr; Media List</a></p>
+{% endblock %}
