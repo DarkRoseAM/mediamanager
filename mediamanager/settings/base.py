@@ -8,28 +8,34 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import dj_database_url
 import os
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+here = lambda * x: os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
+PROJECT_ROOT = here('..')
+root = lambda * x: os.path.join(os.path.abspath(PROJECT_ROOT), *x)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'kz^(#_=)&ow$j-6@0tj@#3g)ct5&xiuv=o_q#ix*vjzc3jhiv-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = DEBUG
 
-TEMPLATE_DEBUG = True
+ADMINS = (
+    ('Allen Rose', 'Allen@TheRoseEffect.com'),
+)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    '.herokuapp.com',
+    '.herokuapp.com.',
+]
 
 # Application definition
-
-INSTALLED_APPS = (
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,6 +43,15 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 )
+
+THIRD_PARTY_APPS = (
+    'south',
+)
+
+LOCAL_APPS = (
+)
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -51,20 +66,12 @@ ROOT_URLCONF = 'mediamanager.urls'
 
 WSGI_APPLICATION = 'mediamanager.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(),
 }
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -75,8 +82,17 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Structure
+MEDIA_ROOT = root('..', 'uploads')
+MEDIA_URL = ''
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-
+STATIC_ROOT = root('..', 'static')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    root('..', 'assets'),
+)
+
+TEMPLATE_DIRS = (
+    root('templates'),
+)
