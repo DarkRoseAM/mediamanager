@@ -3,23 +3,16 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 
-class MediaManager(models.Manager):
-    def live(self):
-        return self.model.objects.filter(published=True)
-
-
 class Media(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(auto_now=True, editable=False)
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, blank=True, default='')
-    content = models.TextField()
-    published = models.BooleanField(default=True)
-    creator = models.ForeignKey(User, related_name='uploads')
-    objects = MediaManager()
-
-    class Meta:
-        ordering = ['-created_at', 'title']
+    version = models.CharField(max_length=255, blank=True)
+    releasedate = models.DateField()
+    contenttype = models.CharField(max_length=255, blank=True)
+    language = models.CharField(max_length=255, blank=True)
+    barcode = models.IntegerField()
+    md5 = models.CharField(max_length=255)
+    creator = models.ForeignKey(User, related_name='mediafiles')
 
     def __unicode(self):
         return self.title

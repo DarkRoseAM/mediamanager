@@ -3,13 +3,45 @@ from .models import Media
 
 
 class MediaAdmin(admin.ModelAdmin):
-    date_hierarchy = 'created_at'
-    fields = ('published', 'title', 'slug', 'content', 'creator')
-    list_display = ['published', 'title', 'updated_at']
+    date_hierarchy = 'releasedate'
+
+    fields = (
+        'title',
+        'slug',
+        'version',
+        'releasedate',
+        'contenttype',
+        'language',
+        'barcode',
+        'md5',
+        'creator',
+    )
+
+    list_display = [
+        'title',
+        'releasedate',
+        'version',
+        'contenttype',
+        'language',
+        'barcode',
+    ]
+
     list_display_links = ['title']
-    list_editable = ['published']
-    list_filter = ['published', 'updated_at', 'creator']
+
+    list_editable = [
+        'version',
+        'contenttype',
+    ]
+
+    list_filter = [
+        'releasedate',
+        'version',
+        'contenttype',
+        'language',
+    ]
+
     prepopulated_fields = {'slug': ('title',)}
-    search_fields = ['title', 'content']
+
+    search_fields = ['title']
 
 admin.site.register(Media, MediaAdmin)
