@@ -4,22 +4,24 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
-DEFAULT_OPTIONS = {'max_length': 255, 'blank': True, 'default': ''}
+NULL_OPTIONS = {'blank': True, 'null': True}
+DEFAULT_OPTIONS = {'max_length': 255}
+DEFAULT_OPTIONS.update(NULL_OPTIONS)
 
 ADD_COLUMNS = {
-    'barcode': {'fieldType': 'django.db.models.fields.IntegerField', 'options': {}},
+    'barcode': {'fieldType': 'django.db.models.fields.IntegerField', 'options': NULL_OPTIONS},
     'contenttype': {'fieldType': 'django.db.models.fields.CharField', 'options': DEFAULT_OPTIONS},
     'language': {'fieldType': 'django.db.models.fields.CharField', 'options': DEFAULT_OPTIONS},
     'md5': {'fieldType': 'django.db.models.fields.CharField', 'options': DEFAULT_OPTIONS},
-    'releasedate': {'fieldType': 'django.db.models.fields.DateField', 'options': {}},
+    'releasedate': {'fieldType': 'django.db.models.fields.DateField', 'options': NULL_OPTIONS},
     'version': {'fieldType': 'django.db.models.fields.CharField', 'options': DEFAULT_OPTIONS},
 }
 
 DELETE_COLUMNS = {
-    'content': {'fieldType': 'django.db.models.fields.TextField', 'options': {'blank': True}},
-    'created_at': {'fieldType': 'django.db.models.fields.DateTimeField', 'options': {}},
-    'published': {'fieldType': 'django.db.models.fields.BooleanField', 'options': {}},
-    'updated_at': {'fieldType': 'django.db.models.fields.DateTimeField', 'options': {}},
+    'content': {'fieldType': 'django.db.models.fields.TextField', 'options': NULL_OPTIONS},
+    'created_at': {'fieldType': 'django.db.models.fields.DateTimeField', 'options': NULL_OPTIONS},
+    'published': {'fieldType': 'django.db.models.fields.BooleanField', 'options': NULL_OPTIONS},
+    'updated_at': {'fieldType': 'django.db.models.fields.DateTimeField', 'options': NULL_OPTIONS},
 }
 
 
