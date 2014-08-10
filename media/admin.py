@@ -8,8 +8,8 @@ class MediaAdmin(admin.ModelAdmin):
     fields = (
         'title',
         'slug',
-        'version',
         'releasedate',
+        'version',
         'contenttype',
         'language',
         'barcode',
@@ -24,20 +24,19 @@ class MediaAdmin(admin.ModelAdmin):
         'contenttype',
         'language',
         'barcode',
+        'creator',
     ]
 
     list_display_links = ['title']
 
-    list_editable = [
-        'version',
-        'contenttype',
-    ]
+    list_editable = []
 
     list_filter = [
         'releasedate',
         'version',
         'contenttype',
         'language',
+        'creator',
     ]
 
     prepopulated_fields = {'slug': ('title',)}
