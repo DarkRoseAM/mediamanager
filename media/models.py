@@ -4,15 +4,15 @@ from django.template.defaultfilters import slugify
 
 
 class Media(models.Model):
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, blank=True, default='')
-    version = models.CharField(max_length=255, blank=True)
-    releasedate = models.DateField()
-    contenttype = models.CharField(max_length=255, blank=True)
-    language = models.CharField(max_length=255, blank=True)
     barcode = models.IntegerField()
-    md5 = models.CharField(max_length=255)
+    contenttype = models.CharField(max_length=255, blank=True)
     creator = models.ForeignKey(User, related_name='mediafiles')
+    language = models.CharField(max_length=255, blank=True)
+    md5 = models.CharField(max_length=255, blank=True)
+    releasedate = models.DateField()
+    slug = models.SlugField(max_length=255, blank=True, default='')
+    title = models.CharField(max_length=255, blank=True)
+    version = models.CharField(max_length=255, blank=True)
 
     def __unicode(self):
         return self.title

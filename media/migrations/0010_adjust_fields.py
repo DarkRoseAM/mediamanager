@@ -4,20 +4,22 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+DEFAULT_OPTIONS = {'max_length': 255, 'blank': True}
+
 ADD_COLUMNS = {
-    'barcode': 'django.db.models.fields.IntegerField',
-    'contenttype': 'django.db.models.fields.CharField',
-    'language': 'django.db.models.fields.CharField',
-    'md5': 'django.db.models.fields.CharField',
-    'releasedate': 'django.db.models.fields.DateField',
-    'version': 'django.db.models.fields.CharField',
+    'barcode': {'fieldType': 'django.db.models.fields.IntegerField', 'options': {}},
+    'contenttype': {'fieldType': 'django.db.models.fields.CharField', 'options': DEFAULT_OPTIONS},
+    'language': {'fieldType': 'django.db.models.fields.CharField', 'options': DEFAULT_OPTIONS},
+    'md5': {'fieldType': 'django.db.models.fields.CharField', 'options': DEFAULT_OPTIONS},
+    'releasedate': {'fieldType': 'django.db.models.fields.DateField', 'options': {}},
+    'version': {'fieldType': 'django.db.models.fields.CharField', 'options': DEFAULT_OPTIONS},
 }
 
 DELETE_COLUMNS = {
-    'content': 'django.db.models.fields.TextField',
-    'created_at': 'django.db.models.fields.DateTimeField',
-    'published': 'django.db.models.fields.BooleanField',
-    'updated_at': 'django.db.models.fields.DateTimeField',
+    'content': {'fieldType': 'django.db.models.fields.TextField', 'options': {'blank': True}},
+    'created_at': {'fieldType': 'django.db.models.fields.DateTimeField', 'options': {}},
+    'published': {'fieldType': 'django.db.models.fields.BooleanField', 'options': {}},
+    'updated_at': {'fieldType': 'django.db.models.fields.DateTimeField', 'options': {}},
 }
 
 
@@ -25,11 +27,11 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding fields.
-        for col, fieldType in ADD_COLUMNS.iteritems():
+        for col, values in ADD_COLUMNS.iteritems():
             db.add_column(
                 'media_media',
                 col,
-                self.gf(fieldType)(),
+                self.gf(values['fieldType'])(**values['options']),
             )
 
         # Deleting fields.
@@ -38,11 +40,11 @@ class Migration(SchemaMigration):
 
     def backwards(self, orm):
         # Adding fields.
-        for col, fieldType in DELETE_COLUMNS.iteritems():
+        for col, values in DELETE_COLUMNS.iteritems():
             db.add_column(
                 'media_media',
                 col,
-                self.gf(fieldType)(),
+                self.gf(values['fieldType'])(**values['options']),
             )
 
         # Deleting fields.
