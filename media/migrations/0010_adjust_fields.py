@@ -4,7 +4,7 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
-DEFAULT_OPTIONS = {'max_length': 255, 'blank': True}
+DEFAULT_OPTIONS = {'max_length': 255, 'blank': True, 'default': ''}
 
 ADD_COLUMNS = {
     'barcode': {'fieldType': 'django.db.models.fields.IntegerField', 'options': {}},
