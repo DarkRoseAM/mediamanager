@@ -26,40 +26,28 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding fields.
         for col, fieldType in ADD_COLUMNS.iteritems():
-            try:
-                db.add_column(
-                    'media_media',
-                    col,
-                    self.gf(fieldType)(),
-                )
-            except:
-                pass
+            db.add_column(
+                'media_media',
+                col,
+                self.gf(fieldType)(),
+            )
 
         # Deleting fields.
         for col in DELETE_COLUMNS.keys():
-            try:
-                db.delete_column('media_media', col)
-            except:
-                pass
+            db.delete_column('media_media', col)
 
     def backwards(self, orm):
         # Adding fields.
         for col, fieldType in DELETE_COLUMNS.iteritems():
-            try:
-                db.add_column(
-                    'media_media',
-                    col,
-                    self.gf(fieldType)(),
-                )
-            except:
-                pass
+            db.add_column(
+                'media_media',
+                col,
+                self.gf(fieldType)(),
+            )
 
         # Deleting fields.
         for col in ADD_COLUMNS.keys():
-            try:
-                db.delete_column('media_media', col)
-            except:
-                pass
+            db.delete_column('media_media', col)
 
     models = {
         u'media.media': {
