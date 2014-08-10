@@ -24,7 +24,7 @@ urlpatterns += patterns(
 
 urlpatterns += patterns(
     '',
-    (r'^media/', include('mediamanager.media.urls')),
+    (r'^manifest/', include('mediamanager.media.urls')),
     (r'^$', RedirectView.as_view(url='/media/manifest_list/')),
 )
 

@@ -20,6 +20,7 @@ def manifest_list(request):
     # Handle file upload.
     if request.method == 'POST':
         form = ManifestForm(request.POST, request.FILES)
+
         if form.is_valid():
             manifest_file = Manifest(
                 manifest_file=request.FILES['manifest_file'],
