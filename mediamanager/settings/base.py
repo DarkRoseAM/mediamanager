@@ -85,7 +85,7 @@ USE_TZ = True
 
 # Structure
 MEDIA_ROOT = root('..', 'uploads')
-MEDIA_URL = ''
+MEDIA_URL = '/uploads/'
 
 STATIC_ROOT = root('..', 'static')
 STATIC_URL = '/static/'

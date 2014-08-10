@@ -25,3 +25,7 @@ class Media(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return 'media:detail', (), {'slug': self.slug}
+
+
+class Manifest(models.Model):
+    manifest_file = models.FileField(upload_to='manifest_files/%Y/%m/%d')
