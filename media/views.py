@@ -29,9 +29,8 @@ def manifest_list(request, *args, **kwargs):
                 manifest_file=request.FILES['manifest_file'],
             )
             manifest_file.save()
-            # Redirect to the manifest list after POST.
-            request.method = 'GET'
-            return HttpResponseRedirect(reverse(manifest_list(request)))
+
+            return HttpResponseRedirect(reverse('media:manifest'))
 
     else:
         form = ManifestForm()  # A empty, unbound form.
