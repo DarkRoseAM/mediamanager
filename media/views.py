@@ -1,20 +1,33 @@
+# =============================================================================
+# IMPORTS
+# =============================================================================
+
+# Django Imports
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic import DetailView, ListView
 
+# Application Imports
 from .forms import ManifestForm
 from .models import Media
 
+# =============================================================================
+# CLASSES
+# =============================================================================
 
 class MediaDetailView(DetailView):
     model = Media
 
+# =============================================================================
 
 class MediaListView(ListView):
     model = Media
 
+# =============================================================================
+# PUBLIC FUNCTIONS
+# =============================================================================
 
 def manifest_list(request, *args, **kwargs):
     template_name = 'manifest_list.html'

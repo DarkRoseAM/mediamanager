@@ -1,6 +1,14 @@
+# =============================================================================
+# IMPORTS
+# =============================================================================
+
+# Django Imports
 from django.contrib import admin
 from .models import Media
 
+# =============================================================================
+# CLASSES
+# =============================================================================
 
 class MediaAdmin(admin.ModelAdmin):
     date_hierarchy = 'releasedate'
@@ -39,5 +47,9 @@ class MediaAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
     search_fields = ['title']
+
+# =============================================================================
+# EXECUTION
+# =============================================================================
 
 admin.site.register(Media, MediaAdmin)
