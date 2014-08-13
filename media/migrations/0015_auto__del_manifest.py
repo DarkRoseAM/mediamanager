@@ -8,28 +8,30 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Media.version'
-        db.add_column(u'media_media', 'version',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=255, blank=True),
-                      keep_default=False)
+        # Deleting model 'Manifest'
+        db.delete_table(u'media_manifest')
 
 
     def backwards(self, orm):
-        # Deleting field 'Media.version'
-        db.delete_column(u'media_media', 'version')
+        # Adding model 'Manifest'
+        db.create_table(u'media_manifest', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('manifest_file', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+        ))
+        db.send_create_signal(u'media', ['Manifest'])
 
 
     models = {
         u'media.media': {
             'Meta': {'object_name': 'Media'},
-            'barcode': ('django.db.models.fields.IntegerField', [], {'blank': 'True'}),
+            'barcode': ('django.db.models.fields.IntegerField', [], {}),
             'contenttype': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'language': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'md5': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'releasedate': ('django.db.models.fields.DateField', [], {'blank': 'True'}),
+            'md5': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'releasedate': ('django.db.models.fields.DateField', [], {}),
             'slug': ('django.db.models.fields.SlugField', [], {'default': "''", 'max_length': '255', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'version': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'})
         }
     }

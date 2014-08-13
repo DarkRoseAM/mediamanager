@@ -1,0 +1,29 @@
+{% extends "_layouts/base.html" %}
+
+{% block page_title %} Manifests {% endblock %}
+
+{% block page_content %}
+    <!-- Upload form. Note enctype attribute! -->
+    <form action="{% url "media:table" %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>{{ form.non_field_errors }}</p>
+        <p>{{ form.manifest.label_tag }} {{ form.manifest.help_text }}</p>
+        <p>
+            {{ form.manifest.errors }}
+            {{ form.manifest }}
+        </p>
+        <p><input type="submit" value="Upload" /></p>
+    </form>
+
+    <!-- List of uploaded manifest_files -->
+    {% if manifests %}
+        <ul>
+        {% for manifest in manifests %}
+            <li><a href="{{ manifest.manifest.url }}">{{ manifest.manifest.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No manifest files.</p>
+    {% endif %}
+
+{% endblock %}

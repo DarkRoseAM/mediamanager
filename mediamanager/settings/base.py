@@ -1,5 +1,4 @@
-"""
-Django settings for mediamanager project.
+""" Django settings for mediamanager project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -8,8 +7,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-import dj_database_url
+# =============================================================================
+# IMPORTS
+# =============================================================================
+
+# Standard Imports
 import os
+
+# Third Party Imports
+import dj_database_url
+
+# =============================================================================
+# GLOBALS
+# =============================================================================
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -85,7 +95,7 @@ USE_TZ = True
 
 # Structure
 MEDIA_ROOT = root('..', 'uploads')
-MEDIA_URL = ''
+MEDIA_URL = '/uploads/'
 
 STATIC_ROOT = root('..', 'static')
 STATIC_URL = '/static/'

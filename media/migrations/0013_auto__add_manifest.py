@@ -8,15 +8,17 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Media.creator'
-        db.add_column(u'media_media', 'creator',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, related_name='mediafiles', to=orm['auth.User']),
-                      keep_default=False)
+        # Adding model 'Manifest'
+        db.create_table(u'media_manifest', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('manifest_file', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+        ))
+        db.send_create_signal(u'media', ['Manifest'])
 
 
     def backwards(self, orm):
-        # Deleting field 'Media.creator'
-        db.delete_column(u'media_media', 'creator_id')
+        # Deleting model 'Manifest'
+        db.delete_table(u'media_manifest')
 
 
     models = {
@@ -56,6 +58,11 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'media.manifest': {
+            'Meta': {'object_name': 'Manifest'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'manifest_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100'})
+        },
         u'media.media': {
             'Meta': {'object_name': 'Media'},
             'barcode': ('django.db.models.fields.IntegerField', [], {}),
@@ -63,10 +70,10 @@ class Migration(SchemaMigration):
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'mediafiles'", 'to': u"orm['auth.User']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'language': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            'md5': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'md5': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'releasedate': ('django.db.models.fields.DateField', [], {}),
             'slug': ('django.db.models.fields.SlugField', [], {'default': "''", 'max_length': '255', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'version': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'})
         }
     }

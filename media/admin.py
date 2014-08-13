@@ -1,6 +1,14 @@
+# =============================================================================
+# IMPORTS
+# =============================================================================
+
+# Django Imports
 from django.contrib import admin
 from .models import Media
 
+# =============================================================================
+# CLASSES
+# =============================================================================
 
 class MediaAdmin(admin.ModelAdmin):
     date_hierarchy = 'releasedate'
@@ -14,7 +22,6 @@ class MediaAdmin(admin.ModelAdmin):
         'language',
         'barcode',
         'md5',
-        'creator',
     )
 
     list_display = [
@@ -24,7 +31,6 @@ class MediaAdmin(admin.ModelAdmin):
         'contenttype',
         'language',
         'barcode',
-        'creator',
     ]
 
     list_display_links = ['title']
@@ -36,11 +42,14 @@ class MediaAdmin(admin.ModelAdmin):
         'version',
         'contenttype',
         'language',
-        'creator',
     ]
 
     prepopulated_fields = {'slug': ('title',)}
 
     search_fields = ['title']
+
+# =============================================================================
+# EXECUTION
+# =============================================================================
 
 admin.site.register(Media, MediaAdmin)

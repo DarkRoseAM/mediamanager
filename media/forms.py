@@ -3,11 +3,13 @@
 # =============================================================================
 
 # Django Imports
-from django.views.generic import TemplateView
+from django import forms
 
 # =============================================================================
 # CLASSES
 # =============================================================================
 
-class HomepageView(TemplateView):
-    template_name = 'index.html'
+class ManifestForm(forms.Form):
+    manifest = forms.FileField(
+        label='Select a XML manifest file.',
+    )
