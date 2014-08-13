@@ -14,7 +14,6 @@ class MediaAdmin(admin.ModelAdmin):
         'language',
         'barcode',
         'md5',
-        'creator',
     )
 
     list_display = [
@@ -24,7 +23,6 @@ class MediaAdmin(admin.ModelAdmin):
         'contenttype',
         'language',
         'barcode',
-        'creator',
     ]
 
     list_display_links = ['title']
@@ -36,7 +34,6 @@ class MediaAdmin(admin.ModelAdmin):
         'version',
         'contenttype',
         'language',
-        'creator',
     ]
 
     prepopulated_fields = {'slug': ('title',)}

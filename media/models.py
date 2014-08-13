@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 
@@ -6,7 +5,6 @@ from django.template.defaultfilters import slugify
 class Media(models.Model):
     barcode = models.IntegerField()
     contenttype = models.CharField(max_length=255, blank=True)
-    creator = models.ForeignKey(User, related_name='mediafiles')
     language = models.CharField(max_length=255, blank=True)
     md5 = models.CharField(max_length=255, blank=True)
     releasedate = models.DateField()
@@ -25,7 +23,3 @@ class Media(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return 'media:detail', (), {'slug': self.slug}
-
-
-class Manifest(models.Model):
-    manifest_file = models.FileField(upload_to='manifest_files/%Y/%m/%d')
