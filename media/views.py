@@ -46,7 +46,7 @@ def mediaTableView(request, *args, **kwargs):
     form = ManifestForm()  # A empty, unbound form.
 
     # Load manifest_files for the list page.
-    context = {'manifests': Media.objects.all(), 'form': form}
+    context = {'media_files': Media.objects.all(), 'form': form}
 
     # Render list page with the manifest_files and the form.
     return render_to_response(

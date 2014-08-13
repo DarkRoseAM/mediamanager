@@ -16,14 +16,14 @@
     </form>
 
     <!-- List of uploaded manifest_files -->
-    {% if manifests %}
+    {% if media_files %}
         <ul>
-        {% for manifest in manifests %}
-            <li><a href="{{ manifest.manifest.url }}">{{ manifest.manifest.name }}</a></li>
+        {% for media in media_files %}
+            <li><a href="{{ media.get_absolute_url }}">{{ media.title }}</a></li>
         {% endfor %}
         </ul>
     {% else %}
-        <p>No manifest files.</p>
+        <p>No available media files.</p>
     {% endif %}
 
 {% endblock %}
