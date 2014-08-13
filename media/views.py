@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.views.generic import DetailView
 
 # Application Imports
-from .forms import ManifestForm
+from .forms import UploadForm
 from .models import Media
 from .utils import getMedia
 
@@ -30,7 +30,7 @@ def mediaTableView(request, *args, **kwargs):
 
     # Handle file upload.
     if request.method == 'POST':
-        form = ManifestForm(request.POST, request.FILES)
+        form = UploadForm(request.POST, request.FILES)
 
         if form.is_valid():
             for media in getMedia(request.FILES['manifest']):
@@ -38,10 +38,15 @@ def mediaTableView(request, *args, **kwargs):
 
         return HttpResponseRedirect(reverse('media:table'))
 
-    form = ManifestForm()  # A empty, unbound form.
+    # A empty, unbound form.
+    form = UploadForm()
 
     # Load manifest_files for the list page.
-    context = {'media_files': Media.objects.all(), 'form': form}
+    context = {
+        'form': form,
+        'media_files': [],
+        'uploads': Upload.objects.all(),
+    }
 
     # Render list page with the manifest_files and the form.
     return render_to_response(

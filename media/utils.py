@@ -10,15 +10,15 @@ import re
 from xml.etree import ElementTree
 
 # Application Imports
-from .models import Media
+from .models import MediaData
 
 # =============================================================================
 # PUBLIC FUNCTIONS
 # =============================================================================
 
-def getMedia(manifest):
+def getManifests(manifestfile):
     elementTree = ElementTree.fromstring(
-        re.sub(' xmlns="[^"]+"', '', manifest.read(), count=1),
+        re.sub(' xmlns="[^"]+"', '', manifestfile.read(), count=1),
     )
 
     results = []
@@ -26,7 +26,7 @@ def getMedia(manifest):
     for fileElement in elementTree.getchildren():
         if fileElement.tag == 'file':
             values = {
-                'manifestfile': manifest,
+                'manifestfile': manifestfile,
             }
 
             for element in fileElement.getchildren():
@@ -39,6 +39,6 @@ def getMedia(manifest):
                 dt = datetime.strptime(releasedate, '%m/%d/%Y')
                 values['releasedate'] = dt.strftime('%Y-%m-%d')
 
-            results.append(Media(**values))
+            results.append(MediaData(**values))
 
     return results
