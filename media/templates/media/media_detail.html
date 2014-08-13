@@ -3,7 +3,62 @@
 {% block page_title %}{{ media.title }} | {% endblock %}
 
 {% block page_content %}
+<p><a href="{% url 'media:table' %}">&larr; All Media</a></p>
+
+
 <h2>{{ media.title }}</h2>
-{{ media.content|linebreaks }}
-<p><a href="{% url 'media:list' %}">&larr; Media List</a></p>
+
+<table>
+    <tr>
+        <th>Content Type:</th>
+        <td>{{ media.contenttype }}</td>
+    </tr>
+    <tr>
+        <th>Version:</th>
+        <td>{{ media.version }}</td>
+    </tr>
+    <tr>
+        <th>Release Date:</th>
+        <td>{{ media.releasedate }}</td>
+    </tr>
+    <tr>
+        <th>Language:</th>
+        <td>{{ media.language }}</td>
+    </tr>
+    <tr>
+        <th>Bar Code:</th>
+        <td>{{ media.barcode }}</td>
+    </tr>
+    <tr>
+        <th>md5:</th>
+        <td>{{ media.md5 }}</td>
+    </tr>
+    <tr>
+        <th>File:</th>
+        <td>{{ media.filename }}</td>
+    </tr>
+    <tr>
+        <th>ID:</th>
+        <td>{{ media.pk }}</td>
+    </tr>
+    <tr>
+        <th>Manifest File:</th>
+        <td>
+            {% if media.manifestfile %}
+                <a href="{{ media.manifestfile.url }}">
+                    {{ media.manifestfile.name }}</a>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>Media File:</th>
+        <td>
+            {% if media.mediafile %}
+                <a href="{{ media.mediafile.url }}">
+                    {{ media.mediafile.name }}</a>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
 {% endblock %}

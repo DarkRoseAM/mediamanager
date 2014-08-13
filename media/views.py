@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView
 
 # Application Imports
 from .forms import ManifestForm
@@ -22,11 +22,6 @@ class MediaDetailView(DetailView):
     model = Media
 
 # =============================================================================
-
-class MediaListView(ListView):
-    model = Media
-
-# =============================================================================
 # PUBLIC FUNCTIONS
 # =============================================================================
 
@@ -38,10 +33,10 @@ def mediaTableView(request, *args, **kwargs):
         form = ManifestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            for media in getMedia(request.FILES['manifest'].read()):
+            for media in getMedia(request.FILES['manifest']):
                 media.save()
 
-        return HttpResponseRedirect(reverse('media:list'))
+        return HttpResponseRedirect(reverse('media:table'))
 
     form = ManifestForm()  # A empty, unbound form.
 

@@ -13,15 +13,38 @@
             {{ form.manifest }}
         </p>
         <p><input type="submit" value="Upload" /></p>
-    </form>
 
     <!-- List of uploaded manifest_files -->
     {% if media_files %}
-        <ul>
-        {% for media in media_files %}
-            <li><a href="{{ media.get_absolute_url }}">{{ media.title }}</a></li>
-        {% endfor %}
-        </ul>
+        <table width='100%'>
+            <tr>
+                <th>Title</th>
+                <th>Content Type</th>
+                <th>Version</th>
+                <th>Release Date</th>
+                <th>Language</th>
+                <th>File</th>
+            </tr>
+
+            {% for media in media_files %}
+                <tr>
+                    <td><a href="{{ media.get_absolute_url }}">
+                        {{ media.title }}</a></td>
+                    <td>{{ media.contenttype }}</td>
+                    <td>{{ media.version }}</td>
+                    <td>{{ media.releasedate }}</td>
+                    <td>{{ media.language }}</td>
+                    <td>
+                        {% if media.mediafile %}
+                            <a href="{{ media.mediafile.url }}">
+                                {{ media.mediafile.name }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
     {% else %}
         <p>No available media files.</p>
     {% endif %}

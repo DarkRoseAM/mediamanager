@@ -15,25 +15,29 @@ class MediaAdmin(admin.ModelAdmin):
 
     fields = (
         'title',
-        'slug',
         'releasedate',
         'version',
         'contenttype',
         'language',
         'barcode',
         'md5',
+        'manifestfile',
+        'mediafile',
     )
 
     list_display = [
+        'pk',
         'title',
         'releasedate',
         'version',
         'contenttype',
         'language',
         'barcode',
+        'manifestfile',
+        'mediafile',
     ]
 
-    list_display_links = ['title']
+    list_display_links = ['pk', 'title']
 
     list_editable = []
 
@@ -43,8 +47,6 @@ class MediaAdmin(admin.ModelAdmin):
         'contenttype',
         'language',
     ]
-
-    prepopulated_fields = {'slug': ('title',)}
 
     search_fields = ['title']
 

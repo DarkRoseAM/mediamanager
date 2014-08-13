@@ -15,9 +15,8 @@ from . import views
 urlpatterns = patterns(
     '',
     url(r'^$', views.mediaTableView, name='table'),
-    url(r'^list/$', views.MediaListView.as_view(), name='list'),
     url(
-        r'^(?P<slug>[\w-]+)/$',
+        r'(?P<pk>\d+)/$',
         views.MediaDetailView.as_view(),
         name='detail',
     ),

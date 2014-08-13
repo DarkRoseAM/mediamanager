@@ -16,16 +16,18 @@ from .models import Media
 # PUBLIC FUNCTIONS
 # =============================================================================
 
-def getMedia(inputString):
+def getMedia(manifest):
     elementTree = ElementTree.fromstring(
-        re.sub(' xmlns="[^"]+"', '', inputString, count=1),
+        re.sub(' xmlns="[^"]+"', '', manifest.read(), count=1),
     )
 
     results = []
 
     for fileElement in elementTree.getchildren():
         if fileElement.tag == 'file':
-            values = {}
+            values = {
+                'manifestfile': manifest,
+            }
 
             for element in fileElement.getchildren():
                 values[element.tag] = element.text
