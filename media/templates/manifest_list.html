@@ -4,22 +4,22 @@
 
 {% block page_content %}
     <!-- Upload form. Note enctype attribute! -->
-    <form action="{% url "media:manifest" %}" method="post" enctype="multipart/form-data">
+    <form action="{% url "media:uploader" %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <p>{{ form.non_field_errors }}</p>
-        <p>{{ form.manifest_file.label_tag }} {{ form.manifest_file.help_text }}</p>
+        <p>{{ form.manifest.label_tag }} {{ form.manifest.help_text }}</p>
         <p>
-            {{ form.manifest_file.errors }}
-            {{ form.manifest_file }}
+            {{ form.manifest.errors }}
+            {{ form.manifest }}
         </p>
         <p><input type="submit" value="Upload" /></p>
     </form>
 
     <!-- List of uploaded manifest_files -->
-    {% if manifest_files %}
+    {% if manifests %}
         <ul>
-        {% for manifest_file in manifest_files %}
-            <li><a href="{{ manifest_file.manifest_file.url }}">{{ manifest_file.manifest_file.name }}</a></li>
+        {% for manifest in manifests %}
+            <li><a href="{{ manifest.manifest.url }}">{{ manifest.manifest.name }}</a></li>
         {% endfor %}
         </ul>
     {% else %}

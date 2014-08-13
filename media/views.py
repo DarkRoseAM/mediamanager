@@ -12,6 +12,7 @@ from django.views.generic import DetailView, ListView
 # Application Imports
 from .forms import ManifestForm
 from .models import Media
+from .utils import getMedia
 
 # =============================================================================
 # CLASSES
@@ -29,7 +30,7 @@ class MediaListView(ListView):
 # PUBLIC FUNCTIONS
 # =============================================================================
 
-def manifest_list(request, *args, **kwargs):
+def uploader(request, *args, **kwargs):
     template_name = 'manifest_list.html'
 
     # Handle file upload.
@@ -37,21 +38,15 @@ def manifest_list(request, *args, **kwargs):
         form = ManifestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            for values in parse_xml(request.FILES['manifest_file']):
-                media = Media(**values)
+            for media in getMedia(request.FILES['manifest'].read()):
                 media.save()
-
-            #return HttpResponseRedirect(reverse(
-            #    'media:detail',
-            #    args=['jurassic-park'],
-            #))
 
         return HttpResponseRedirect(reverse('media:list'))
 
     form = ManifestForm()  # A empty, unbound form.
 
     # Load manifest_files for the list page.
-    context = {'manifest_files': Media.objects.all(), 'form': form}
+    context = {'manifests': Media.objects.all(), 'form': form}
 
     # Render list page with the manifest_files and the form.
     return render_to_response(
@@ -59,12 +54,3 @@ def manifest_list(request, *args, **kwargs):
         context,
         context_instance=RequestContext(request),
     )
-
-
-def parse_xml(*args):
-    return [{
-        'barcode': '12345',
-        'releasedate': '1980-06-12',
-        'title': 'Blade Runner',
-        'version': 'Directors Cut',
-    }]
