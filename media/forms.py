@@ -11,6 +11,5 @@ from django import forms
 
 class ManifestForm(forms.Form):
     manifest = forms.FileField(
-        label='Select a manifest file.',
-        help_text='This needs to be an xml file.'
+        label='Select a XML manifest file.',
     )

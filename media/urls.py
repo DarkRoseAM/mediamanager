@@ -14,8 +14,8 @@ from . import views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.MediaListView.as_view(), name='list'),
-    url(r'^manifest/$', views.uploader, name='uploader'),
+    url(r'^$', views.mediaTableView, name='table'),
+    url(r'^list/$', views.MediaListView.as_view(), name='list'),
     url(
         r'^(?P<slug>[\w-]+)/$',
         views.MediaDetailView.as_view(),

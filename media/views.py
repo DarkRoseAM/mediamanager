@@ -30,8 +30,8 @@ class MediaListView(ListView):
 # PUBLIC FUNCTIONS
 # =============================================================================
 
-def uploader(request, *args, **kwargs):
-    template_name = 'manifest_list.html'
+def mediaTableView(request, *args, **kwargs):
+    template_name = 'media_table.html'
 
     # Handle file upload.
     if request.method == 'POST':
