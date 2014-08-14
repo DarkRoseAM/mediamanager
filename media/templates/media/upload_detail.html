@@ -1,0 +1,16 @@
+{% extends "_layouts/base.html" %}
+
+{% block page_title %} Upload | {% endblock %}
+
+{% block page_content %}
+
+<p>
+    Created:<br>
+    {{ upload.created_at }}
+</p>
+
+Manifest File:
+<a href="{{ upload.manifest.get_absolute_url }}">
+    {{ upload.manifest.file }}</a>
+
+{% endblock %}

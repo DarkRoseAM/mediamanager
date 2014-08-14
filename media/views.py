@@ -11,15 +11,30 @@ from django.views.generic import DetailView
 
 # Application Imports
 from .forms import UploadForm
-from .models import Media
+from . import models
 from .utils import processUpload
 
 # =============================================================================
 # CLASSES
 # =============================================================================
 
+class ManifestDetailView(DetailView):
+    model = models.Manifest
+
+# =============================================================================
+
 class MediaDetailView(DetailView):
-    model = Media
+    model = models.Media
+
+# =============================================================================
+
+class MediaDataDetailView(DetailView):
+    model = models.MediaData
+
+# =============================================================================
+
+class UploadDetailView(DetailView):
+    model = models.Upload
 
 # =============================================================================
 # PUBLIC FUNCTIONS

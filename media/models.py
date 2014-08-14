@@ -27,6 +27,12 @@ class FileInstance(models.Model):
     # PUBLIC METHODS
     # =========================================================================
 
+    @models.permalink
+    def get_absolute_url(self):
+        return 'media:manifest', (), {'pk': self.pk}
+
+    # =========================================================================
+
     def save(self, *args, **kwargs):
         md5 = hashlib.md5()
 
@@ -93,3 +99,6 @@ class Media(FileInstance):
 class Upload(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     manifest = models.ForeignKey(Manifest, related_name='uploads')
+
+    class Meta:
+        ordering = ['-created_at']

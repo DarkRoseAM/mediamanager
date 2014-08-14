@@ -87,10 +87,11 @@ class UploadAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
     fields = (
-       'manifest',
+        'manifest',
     )
 
     list_display = [
+        'pk',
         'created_at',
         'manifest',
     ]

@@ -14,10 +14,33 @@ from . import views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.mediaTableView, name='table'),
     url(
-        r'(?P<pk>\d+)/$',
+        r'^$',
+        views.mediaTableView,
+        name='table',
+    ),
+
+    url(
+        r'^manifest/(?P<pk>[\w-]+)/$',
+        views.ManifestDetailView.as_view(),
+        name='manifest',
+    ),
+
+    url(
+        r'^mediaDetail/(?P<pk>[\w-]+)/$',
         views.MediaDetailView.as_view(),
-        name='detail',
+        name='media',
+    ),
+
+    url(
+        r'^mediaData/(?P<pk>[\w-]+)/$',
+        views.MediaDataDetailView.as_view(),
+        name='mediaData',
+    ),
+
+    url(
+        r'^upload/(?P<pk>\d+)/$',
+        views.UploadDetailView.as_view(),
+        name='upload',
     ),
 )
