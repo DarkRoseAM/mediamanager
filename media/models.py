@@ -13,9 +13,8 @@ from django.db import models
 # =============================================================================
 
 class FileInstance(models.Model):
-    root = 'generic'
     md5 = models.CharField(max_length=32, primary_key=True, editable=False)
-    file = models.FileField(upload_to=root, null=True)
+    file = models.FileField(upload_to='generic', null=True)
 
     # =========================================================================
     # SPECIAL METHODS
@@ -40,11 +39,12 @@ class FileInstance(models.Model):
 # =============================================================================
 
 class Manifest(FileInstance):
-    root = 'manifests'
+    pass
 
 # =============================================================================
 
 class MediaData(models.Model):
+    md5 = models.CharField(max_length=32, primary_key=True, editable=False)
     barcode = models.IntegerField()
     contenttype = models.CharField(max_length=255, blank=True)
     language = models.CharField(max_length=255, blank=True)
@@ -61,10 +61,31 @@ class MediaData(models.Model):
     def __unicode(self):
         return self.title
 
+    # =========================================================================
+    # PUBLIC METHODS
+    # =========================================================================
+
+    def save(self, *args, **kwargs):
+        md5 = hashlib.md5()
+
+        properties = [
+            'barcode',
+            'contenttype',
+            'language',
+            'releasedate',
+            'title',
+            'version',
+        ]
+
+        for prop in properties:
+            md5.update('{0}:{1},'.format(prop, getattr(self, prop)).lower())
+
+        self.md5 = md5.hexdigest()
+        super(MediaData, self).save(*args, **kwargs)
+
 # =============================================================================
 
 class Media(FileInstance):
-    root = 'media'
     data = models.ForeignKey(MediaData, related_name='files')
 
 # =============================================================================

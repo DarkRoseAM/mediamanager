@@ -97,12 +97,12 @@ def processUpload(inputFile):
         )
         mediaData.save()
 
-
+# =============================================================================
 
 def something():
-        # Create Media model.
-        media = models.Media(
-            data=mediaData,
-            file=values.get('filename'),
-        )
-        media.save()
+    # Create Media model.
+    media = models.Media(
+        data=mediaData,
+        file=None,
+    )
+    media.save()

@@ -8,49 +8,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'FileInstance'
-        db.create_table(u'media_fileinstance', (
-            ('md5', self.gf('django.db.models.fields.CharField')(max_length=32, primary_key=True)),
-            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True)),
-        ))
-        db.send_create_signal(u'media', ['FileInstance'])
-
-        # Adding model 'Manifest'
-        db.create_table(u'media_manifest', (
-            (u'fileinstance_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['media.FileInstance'], unique=True, primary_key=True)),
-        ))
-        db.send_create_signal(u'media', ['Manifest'])
-
-        # Adding model 'MediaData'
-        db.create_table(u'media_mediadata', (
-            ('md5', self.gf('django.db.models.fields.CharField')(max_length=32, primary_key=True)),
-            ('barcode', self.gf('django.db.models.fields.IntegerField')()),
-            ('contenttype', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('releasedate', self.gf('django.db.models.fields.DateField')()),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('version', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('manifest', self.gf('django.db.models.fields.related.ForeignKey')(related_name='media', to=orm['media.Manifest'])),
-        ))
-        db.send_create_signal(u'media', ['MediaData'])
-
-        # Adding model 'Media'
-        db.create_table(u'media_media', (
-            (u'fileinstance_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['media.FileInstance'], unique=True, primary_key=True)),
-            ('data', self.gf('django.db.models.fields.related.ForeignKey')(related_name='files', to=orm['media.MediaData'])),
-        ))
-        db.send_create_signal(u'media', ['Media'])
-
-        # Adding model 'Upload'
-        db.create_table(u'media_upload', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('manifest', self.gf('django.db.models.fields.related.ForeignKey')(related_name='uploads', to=orm['media.Manifest'])),
-        ))
-        db.send_create_signal(u'media', ['Upload'])
-
-
-    def backwards(self, orm):
         # Deleting model 'FileInstance'
         db.delete_table(u'media_fileinstance')
 
@@ -65,6 +22,10 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Upload'
         db.delete_table(u'media_upload')
+
+
+    def backwards(self, orm):
+        pass
 
 
     models = {

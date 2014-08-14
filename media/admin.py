@@ -59,7 +59,7 @@ class MediaDataAdmin(admin.ModelAdmin):
     )
 
     list_display = [
-        'pk',
+        'md5',
         'title',
         'releasedate',
         'version',
@@ -70,7 +70,7 @@ class MediaDataAdmin(admin.ModelAdmin):
         'files',
     ]
 
-    list_display_links = ['pk', 'title']
+    list_display_links = ['title']
 
     list_filter = [
         'releasedate',
