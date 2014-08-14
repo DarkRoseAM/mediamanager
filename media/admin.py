@@ -4,13 +4,51 @@
 
 # Django Imports
 from django.contrib import admin
-from .models import Media
+from .models import Manifest, Media, MediaData, Upload
 
 # =============================================================================
 # CLASSES
 # =============================================================================
 
+class ManifestAdmin(admin.ModelAdmin):
+    fields = (
+        'md5',
+        'file',
+        'media',
+    )
+
+    list_display = [
+        'md5',
+        'file',
+        'media',
+    ]
+
+    list_display_links = ['file']
+
+    list_filter = ['file']
+
+# =============================================================================
+
 class MediaAdmin(admin.ModelAdmin):
+    fields = (
+        'md5',
+        'file',
+        'data',
+    )
+
+    list_display = [
+        'md5',
+        'file',
+        'data',
+    ]
+
+    list_display_links = ['file']
+
+    list_filter = ['file']
+
+# =============================================================================
+
+class MediaDataAdmin(admin.ModelAdmin):
     date_hierarchy = 'releasedate'
 
     fields = (
@@ -20,9 +58,8 @@ class MediaAdmin(admin.ModelAdmin):
         'contenttype',
         'language',
         'barcode',
-        'md5',
-        'manifestfile',
-        'mediafile',
+        'manifest',
+        'files',
     )
 
     list_display = [
@@ -33,13 +70,11 @@ class MediaAdmin(admin.ModelAdmin):
         'contenttype',
         'language',
         'barcode',
-        'manifestfile',
-        'mediafile',
+        'manifest',
+        'files',
     ]
 
     list_display_links = ['pk', 'title']
-
-    list_editable = []
 
     list_filter = [
         'releasedate',
@@ -51,7 +86,29 @@ class MediaAdmin(admin.ModelAdmin):
     search_fields = ['title']
 
 # =============================================================================
+
+class UploadAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created_at'
+
+    fields = (
+        'created_at',
+        'manifest',
+    )
+
+    list_display = [
+        'created_at',
+        'manifest',
+    ]
+
+    list_filter = []
+
+    search_fields = []
+
+# =============================================================================
 # EXECUTION
 # =============================================================================
 
+admin.site.register(Manifest, ManifestAdmin)
 admin.site.register(Media, MediaAdmin)
+admin.site.register(MediaData, MediaDataAdmin)
+admin.site.register(Upload, UploadAdmin)

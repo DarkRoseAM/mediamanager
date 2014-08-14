@@ -12,7 +12,7 @@ from django.views.generic import DetailView
 # Application Imports
 from .forms import UploadForm
 from .models import Media
-from .utils import getMedia
+from .utils import processUpload
 
 # =============================================================================
 # CLASSES
@@ -28,15 +28,15 @@ class MediaDetailView(DetailView):
 def mediaTableView(request, *args, **kwargs):
     template_name = 'media_table.html'
 
+    test = None
     # Handle file upload.
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
 
         if form.is_valid():
-            for media in getMedia(request.FILES['manifest']):
-                media.save()
+            test = processUpload(request.FILES['manifest'])
 
-        return HttpResponseRedirect(reverse('media:table'))
+        #return HttpResponseRedirect(reverse('media:table'))
 
     # A empty, unbound form.
     form = UploadForm()
@@ -44,8 +44,9 @@ def mediaTableView(request, *args, **kwargs):
     # Load manifest_files for the list page.
     context = {
         'form': form,
-        'media_files': [],
-        'uploads': Upload.objects.all(),
+        'test': test,
+        #'media_files': [],
+        #'uploads': Upload.objects.all(),
     }
 
     # Render list page with the manifest_files and the form.
