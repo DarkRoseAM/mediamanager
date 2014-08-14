@@ -12,15 +12,12 @@ from .models import Manifest, Media, MediaData, Upload
 
 class ManifestAdmin(admin.ModelAdmin):
     fields = (
-        'md5',
         'file',
-        'media',
     )
 
     list_display = [
         'md5',
         'file',
-        'media',
     ]
 
     list_display_links = ['file']
@@ -59,7 +56,6 @@ class MediaDataAdmin(admin.ModelAdmin):
         'language',
         'barcode',
         'manifest',
-        'files',
     )
 
     list_display = [
@@ -91,8 +87,7 @@ class UploadAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
     fields = (
-        'created_at',
-        'manifest',
+       'manifest',
     )
 
     list_display = [

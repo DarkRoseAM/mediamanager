@@ -63,29 +63,17 @@ def _getFilesFromXML(inputString):
     return results
 
 # =============================================================================
-
-def _getHash(fileName, blockSize=8192):
-    """ Get the MD5 hash of a given file.
-    """
-    hash = hashlib.md5()
-
-    f = open(fileName)
-    while not endOfFile:
-        hash.update(f.read(blockSize))
-
-    return hash.digest()
-
-# =============================================================================
 # PUBLIC FUNCTIONS
 # =============================================================================
 
 def processUpload(inputFile):
     """ Create the necessary database entries from the given manifest file.
     """
+    inputString = inputFile.read()
+
     # Create Manifest model.
     manifest = models.Manifest(
         file=inputFile,
-        md5=_getHash(inputFile),
     )
     manifest.save()
 
@@ -96,7 +84,7 @@ def processUpload(inputFile):
     upload.save()
 
     # Loop over the list of files from an XML manifest.
-    for values in _getFilesFromXML(inputFile.read()):
+    for values in _getFilesFromXML(inputString):
         # Create MediaData model.
         mediaData = models.MediaData(
             barcode=values.get('barcode'),
@@ -109,10 +97,12 @@ def processUpload(inputFile):
         )
         mediaData.save()
 
+
+
+def something():
         # Create Media model.
         media = models.Media(
             data=mediaData,
-            file=None,
-            md5=values.get('md5'),
+            file=values.get('filename'),
         )
         media.save()

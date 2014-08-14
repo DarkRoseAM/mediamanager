@@ -2,6 +2,9 @@
 # IMPORTS
 # =============================================================================
 
+# Import
+import hashlib
+
 # Django Imports
 from django.db import models
 
@@ -9,17 +12,35 @@ from django.db import models
 # CLASSES
 # =============================================================================
 
-class Manifest(models.Model):
-    md5 = models.CharField(max_length=255, primary_key=True)
-    file = models.FileField(upload_to='manifests', null=True)
+class FileInstance(models.Model):
+    root = 'generic'
+    md5 = models.CharField(max_length=32, primary_key=True, editable=False)
+    file = models.FileField(upload_to=root, null=True)
+
+    # =========================================================================
+    # SPECIAL METHODS
+    # =========================================================================
+
+    def __unicode(self):
+        return self.file
 
     # =========================================================================
     # PUBLIC METHODS
     # =========================================================================
 
-    #@models.permalink
-    #def get_absolute_url(self):
-    #    return 'media:detail', (), {'pk': self.pk}
+    def save(self, *args, **kwargs):
+        md5 = hashlib.md5()
+
+        for chunk in self.file.chunks():
+            md5.update(chunk)
+
+        self.md5 = md5.hexdigest()
+        super(FileInstance, self).save(*args, **kwargs)
+
+# =============================================================================
+
+class Manifest(FileInstance):
+    root = 'manifests'
 
 # =============================================================================
 
@@ -42,19 +63,9 @@ class MediaData(models.Model):
 
 # =============================================================================
 
-class Media(models.Model):
-    md5 = models.CharField(max_length=255, primary_key=True)
-    file = models.FileField(upload_to='media', null=True)
-
+class Media(FileInstance):
+    root = 'media'
     data = models.ForeignKey(MediaData, related_name='files')
-
-    # =========================================================================
-    # PUBLIC METHODS
-    # =========================================================================
-
-    #@models.permalink
-    #def get_absolute_url(self):
-    #    return 'media:detail', (), {'pk': self.pk}
 
 # =============================================================================
 
