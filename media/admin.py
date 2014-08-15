@@ -10,6 +10,7 @@ from .models import Manifest, Media, MediaData, Upload
 # CLASSES
 # =============================================================================
 
+
 class ManifestAdmin(admin.ModelAdmin):
     fields = (
         'file',
@@ -24,7 +25,6 @@ class ManifestAdmin(admin.ModelAdmin):
 
     list_filter = ['file']
 
-# =============================================================================
 
 class MediaAdmin(admin.ModelAdmin):
     fields = (
@@ -43,7 +43,6 @@ class MediaAdmin(admin.ModelAdmin):
 
     list_filter = ['file']
 
-# =============================================================================
 
 class MediaDataAdmin(admin.ModelAdmin):
     date_hierarchy = 'releasedate'
@@ -81,7 +80,6 @@ class MediaDataAdmin(admin.ModelAdmin):
 
     search_fields = ['title']
 
-# =============================================================================
 
 class UploadAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'

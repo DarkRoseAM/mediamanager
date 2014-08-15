@@ -12,26 +12,24 @@ from django.views.generic import DetailView
 # Application Imports
 from .forms import UploadForm
 from . import models
-from .utils import processUpload
+from .utils import process_upload
 
 # =============================================================================
 # CLASSES
 # =============================================================================
 
+
 class ManifestDetailView(DetailView):
     model = models.Manifest
 
-# =============================================================================
 
 class MediaDetailView(DetailView):
     model = models.Media
 
-# =============================================================================
 
 class MediaDataDetailView(DetailView):
     model = models.MediaData
 
-# =============================================================================
 
 class UploadDetailView(DetailView):
     model = models.Upload
@@ -40,7 +38,8 @@ class UploadDetailView(DetailView):
 # PUBLIC FUNCTIONS
 # =============================================================================
 
-def mediaTableView(request, *args, **kwargs):
+
+def media_table_view(request, *args, **kwargs):
     template_name = 'media_table.html'
 
     test = None
@@ -49,7 +48,7 @@ def mediaTableView(request, *args, **kwargs):
         form = UploadForm(request.POST, request.FILES)
 
         if form.is_valid():
-            test = processUpload(request.FILES['manifest'])
+            test = process_upload(request.FILES['manifest'])
 
         #return HttpResponseRedirect(reverse('media:table'))
 

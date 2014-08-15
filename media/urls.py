@@ -16,7 +16,7 @@ urlpatterns = patterns(
     '',
     url(
         r'^$',
-        views.mediaTableView,
+        views.media_table_view,
         name='table',
     ),
 

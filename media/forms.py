@@ -9,6 +9,7 @@ from django import forms
 # CLASSES
 # =============================================================================
 
+
 class UploadForm(forms.Form):
     manifest = forms.FileField(
         label='Select a XML manifest file.',

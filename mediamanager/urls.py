@@ -20,7 +20,6 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^$', views.HomepageView.as_view(), name='home'),
-    url(r'^home/', views.HomepageView.as_view(), name='home'),
     url(r'^media/', include('media.urls', namespace='media')),
     url(r'^admin/', include(admin.site.urls)),
 )

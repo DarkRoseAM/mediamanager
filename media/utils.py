@@ -16,13 +16,14 @@ from . import models
 # PRIVATE FUNCTIONS
 # =============================================================================
 
-def _convertDate(values):
+
+def _convert_date(values):
     """ Convert DateFields to Django's desired formatting.
     """
     # List of DateFields that need to be converted.
-    dateFields = ['releasedate']
+    date_fields = ['releasedate']
 
-    for field in dateFields:
+    for field in date_fields:
         # See if the field is in the dictionary.
         value = values.get(field)
 
@@ -32,31 +33,30 @@ def _convertDate(values):
             # Update the dictionary with the reformated DateTime.
             values[field] = dt.strftime('%Y-%m-%d')
 
-# =============================================================================
 
-def _getFilesFromXML(inputString):
+def _get_files_from_xml(input_string):
     """ Get a list of files from an XML manifest.
     """
     # Convert the inputString to ElementTree format.
-    elementTree = ElementTree.fromstring(
-        re.sub(' xmlns="[^"]+"', '', inputString, count=1),
+    element_tree = ElementTree.fromstring(
+        re.sub(' xmlns="[^"]+"', '', input_string, count=1),
     )
 
     results = []
 
     # Loop over each of the children in the ElementTree.
-    for fileElement in elementTree.getchildren():
+    for file_element in element_tree.getchildren():
         # Ensure that they are files.
-        if fileElement.tag == 'file':
+        if file_element.tag == 'file':
             values = {}
 
             # Loop over each of the keys in the file.
-            for element in fileElement.getchildren():
+            for element in file_element.getchildren():
                 # Add the key and its text value to the values dictionary.
                 values[element.tag] = element.text
 
             # Convert DateFields to Django's desired formatting.
-            _convertDate(values)
+            _convert_date(values)
             # Add the values dictionary to the list of files.
             results.append(values)
 
@@ -66,14 +66,15 @@ def _getFilesFromXML(inputString):
 # PUBLIC FUNCTIONS
 # =============================================================================
 
-def processUpload(inputFile):
+
+def process_upload(input_file):
     """ Create the necessary database entries from the given manifest file.
     """
-    inputString = inputFile.read()
+    input_string = input_file.read()
 
     # Create Manifest model.
     manifest = models.Manifest(
-        file=inputFile,
+        file=input_file,
     )
     manifest.save()
 
@@ -84,9 +85,9 @@ def processUpload(inputFile):
     upload.save()
 
     # Loop over the list of files from an XML manifest.
-    for values in _getFilesFromXML(inputString):
+    for values in _get_files_from_xml(input_string):
         # Create MediaData model.
-        mediaData = models.MediaData(
+        data = models.MediaData(
             barcode=values.get('barcode'),
             contenttype=values.get('contenttype'),
             language=values.get('barcode'),
@@ -95,14 +96,11 @@ def processUpload(inputFile):
             title=values.get('title'),
             version=values.get('version'),
         )
-        mediaData.save()
+        data.save()
 
-# =============================================================================
-
-def something():
-    # Create Media model.
-    media = models.Media(
-        data=mediaData,
-        file=None,
-    )
-    media.save()
+#    # Create Media model.
+#    media = models.Media(
+#        data=mediaData,
+#        file=None,
+#    )
+#    media.save()

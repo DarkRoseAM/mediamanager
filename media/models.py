@@ -12,6 +12,7 @@ from django.db import models
 # CLASSES
 # =============================================================================
 
+
 class FileInstance(models.Model):
     md5 = models.CharField(max_length=32, primary_key=True, editable=False)
     file = models.FileField(upload_to='generic', null=True)
@@ -31,8 +32,6 @@ class FileInstance(models.Model):
     def get_absolute_url(self):
         return 'media:manifest', (), {'pk': self.pk}
 
-    # =========================================================================
-
     def save(self, *args, **kwargs):
         md5 = hashlib.md5()
 
@@ -42,12 +41,10 @@ class FileInstance(models.Model):
         self.md5 = md5.hexdigest()
         super(FileInstance, self).save(*args, **kwargs)
 
-# =============================================================================
 
 class Manifest(FileInstance):
     pass
 
-# =============================================================================
 
 class MediaData(models.Model):
     md5 = models.CharField(max_length=32, primary_key=True, editable=False)
@@ -71,6 +68,10 @@ class MediaData(models.Model):
     # PUBLIC METHODS
     # =========================================================================
 
+    @models.permalink
+    def get_absolute_url(self):
+        return 'media:manifest', (), {'pk': self.pk}
+
     def save(self, *args, **kwargs):
         md5 = hashlib.md5()
 
@@ -89,12 +90,10 @@ class MediaData(models.Model):
         self.md5 = md5.hexdigest()
         super(MediaData, self).save(*args, **kwargs)
 
-# =============================================================================
 
 class Media(FileInstance):
     data = models.ForeignKey(MediaData, related_name='files')
 
-# =============================================================================
 
 class Upload(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
