@@ -73,7 +73,7 @@ def process_upload(input_file):
     input_string = input_file.read()
 
     # Create Manifest model.
-    manifest = models.Manifest(
+    manifest = models.File(
         file=input_file,
     )
     manifest.save()
@@ -86,21 +86,14 @@ def process_upload(input_file):
 
     # Loop over the list of files from an XML manifest.
     for values in _get_files_from_xml(input_string):
-        # Create MediaData model.
-        data = models.MediaData(
+        # Create Record model.
+        record = models.Record(
             barcode=values.get('barcode'),
             contenttype=values.get('contenttype'),
-            language=values.get('barcode'),
+            language=values.get('language'),
             manifest=manifest,
             releasedate=values.get('releasedate'),
             title=values.get('title'),
             version=values.get('version'),
         )
-        data.save()
-
-#    # Create Media model.
-#    media = models.Media(
-#        data=mediaData,
-#        file=None,
-#    )
-#    media.save()
+        record.save()

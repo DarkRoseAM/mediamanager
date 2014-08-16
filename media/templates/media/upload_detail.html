@@ -4,13 +4,11 @@
 
 {% block page_content %}
 
-<p>
-    Created:<br>
-    {{ upload.created_at }}
-</p>
+<h4>Created:</h4>
+{{ upload.created_at }}
 
-Manifest File:
-<a href="{{ upload.manifest.get_absolute_url }}">
-    {{ upload.manifest.file }}</a>
+<h4>Manifest File:</h4>
+<a href="{{ upload.record.get_absolute_url }}">
+    {{ upload.record.file }}</a>
 
 {% endblock %}

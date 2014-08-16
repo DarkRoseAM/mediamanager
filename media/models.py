@@ -13,24 +13,17 @@ from django.db import models
 # =============================================================================
 
 
-class FileInstance(models.Model):
+class File(models.Model):
     md5 = models.CharField(max_length=32, primary_key=True, editable=False)
+
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
     file = models.FileField(upload_to='generic', null=True)
 
-    # =========================================================================
-    # SPECIAL METHODS
-    # =========================================================================
-
-    def __unicode(self):
-        return self.file
+    upload = models.ForeignKey(Upload, related_name='files')
 
     # =========================================================================
     # PUBLIC METHODS
     # =========================================================================
-
-    @models.permalink
-    def get_absolute_url(self):
-        return 'media:manifest', (), {'pk': self.pk}
 
     def save(self, *args, **kwargs):
         md5 = hashlib.md5()
@@ -42,62 +35,21 @@ class FileInstance(models.Model):
         super(FileInstance, self).save(*args, **kwargs)
 
 
-class Manifest(FileInstance):
-    pass
-
-
-class MediaData(models.Model):
-    md5 = models.CharField(max_length=32, primary_key=True, editable=False)
+class Record(models.Model):
     barcode = models.IntegerField()
     contenttype = models.CharField(max_length=255, blank=True)
+    filename = models.CharField(max_length=255, blank=True)
     language = models.CharField(max_length=255, blank=True)
+    md5 = models.CharField(max_length=32, blank=True)
     releasedate = models.DateField()
     title = models.CharField(max_length=255, blank=True)
     version = models.CharField(max_length=255, blank=True)
 
-    manifest = models.ForeignKey(Manifest, related_name='media')
-
-    # =========================================================================
-    # SPECIAL METHODS
-    # =========================================================================
-
-    def __unicode(self):
-        return self.title
-
-    # =========================================================================
-    # PUBLIC METHODS
-    # =========================================================================
-
-    @models.permalink
-    def get_absolute_url(self):
-        return 'media:manifest', (), {'pk': self.pk}
-
-    def save(self, *args, **kwargs):
-        md5 = hashlib.md5()
-
-        properties = [
-            'barcode',
-            'contenttype',
-            'language',
-            'releasedate',
-            'title',
-            'version',
-        ]
-
-        for prop in properties:
-            md5.update('{0}:{1},'.format(prop, getattr(self, prop)).lower())
-
-        self.md5 = md5.hexdigest()
-        super(MediaData, self).save(*args, **kwargs)
-
-
-class Media(FileInstance):
-    data = models.ForeignKey(MediaData, related_name='files')
+    upload = models.ForeignKey(Upload, related_name='records')
 
 
 class Upload(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    manifest = models.ForeignKey(Manifest, related_name='uploads')
 
     class Meta:
         ordering = ['-created_at']

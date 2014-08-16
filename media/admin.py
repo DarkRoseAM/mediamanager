@@ -4,47 +4,35 @@
 
 # Django Imports
 from django.contrib import admin
-from .models import Manifest, Media, MediaData, Upload
+
+# Application Imports
+from . import models
 
 # =============================================================================
 # CLASSES
 # =============================================================================
 
 
-class ManifestAdmin(admin.ModelAdmin):
+class FileAdmin(admin.ModelAdmin):
+    date_hierarchy = 'created_at'
+
     fields = (
+        'created_at',
+        'md5',
         'file',
+        'upload',
     )
 
     list_display = [
+        'created_at',
         'md5',
         'file',
     ]
 
     list_display_links = ['file']
 
-    list_filter = ['file']
 
-
-class MediaAdmin(admin.ModelAdmin):
-    fields = (
-        'md5',
-        'file',
-        'data',
-    )
-
-    list_display = [
-        'md5',
-        'file',
-        'data',
-    ]
-
-    list_display_links = ['file']
-
-    list_filter = ['file']
-
-
-class MediaDataAdmin(admin.ModelAdmin):
+class RecordAdmin(admin.ModelAdmin):
     date_hierarchy = 'releasedate'
 
     fields = (
@@ -54,19 +42,20 @@ class MediaDataAdmin(admin.ModelAdmin):
         'contenttype',
         'language',
         'barcode',
-        'manifest',
+        'md5',
+        'filename',
+        'upload',
     )
 
     list_display = [
-        'md5',
         'title',
         'releasedate',
         'version',
         'contenttype',
         'language',
         'barcode',
-        'manifest',
-        'files',
+        'md5',
+        'filename',
     ]
 
     list_display_links = ['title']
@@ -85,11 +74,11 @@ class UploadAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
     fields = (
-        'manifest',
+        'records',
+        'files',
     )
 
     list_display = [
-        'pk',
         'created_at',
         'manifest',
     ]
@@ -102,7 +91,6 @@ class UploadAdmin(admin.ModelAdmin):
 # EXECUTION
 # =============================================================================
 
-admin.site.register(Manifest, ManifestAdmin)
-admin.site.register(Media, MediaAdmin)
-admin.site.register(MediaData, MediaDataAdmin)
-admin.site.register(Upload, UploadAdmin)
+admin.site.register(models.File, FileAdmin)
+admin.site.register(models.Record, RecordAdmin)
+admin.site.register(models.Upload, UploadAdmin)

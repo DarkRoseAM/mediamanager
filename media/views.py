@@ -19,16 +19,8 @@ from .utils import process_upload
 # =============================================================================
 
 
-class ManifestDetailView(DetailView):
-    model = models.Manifest
-
-
-class MediaDetailView(DetailView):
-    model = models.Media
-
-
-class MediaDataDetailView(DetailView):
-    model = models.MediaData
+class RecordDetailView(DetailView):
+    model = models.Record
 
 
 class UploadDetailView(DetailView):
@@ -39,7 +31,7 @@ class UploadDetailView(DetailView):
 # =============================================================================
 
 
-def media_table_view(request, *args, **kwargs):
+def table_view(request, *args, **kwargs):
     template_name = 'media_table.html'
 
     test = None
@@ -48,22 +40,20 @@ def media_table_view(request, *args, **kwargs):
         form = UploadForm(request.POST, request.FILES)
 
         if form.is_valid():
-            test = process_upload(request.FILES['manifest'])
+            test = process_upload(request.FILES['record'])
 
         #return HttpResponseRedirect(reverse('media:table'))
 
     # A empty, unbound form.
     form = UploadForm()
 
-    # Load manifest_files for the list page.
+    # Load record for the list page.
     context = {
         'form': form,
         'test': test,
-        #'media_files': [],
-        #'uploads': Upload.objects.all(),
     }
 
-    # Render list page with the manifest_files and the form.
+    # Render list page with the record and the form.
     return render_to_response(
         template_name,
         context,

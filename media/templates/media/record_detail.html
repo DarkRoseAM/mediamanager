@@ -1,0 +1,33 @@
+{% extends "_layouts/base.html" %}
+
+{% block page_title %} Record | {% endblock %}
+
+{% block page_content %}
+
+<h4>{{ record.title }}</h4>
+
+<table>
+    <tr>
+        <th>Content Type:</th>
+        <td>{{ record.contenttype }}</td>
+    </tr>
+    <tr>
+        <th>Version:</th>
+        <td>{{ record.version }}</td>
+    </tr>
+    <tr>
+        <th>Release Date:</th>
+        <td>{{ record.releasedate }}</td>
+    </tr>
+    <tr>
+        <th>Language:</th>
+        <td>{{ record.language }}</td>
+    </tr>
+    <tr>
+        <th>Bar Code:</th>
+        <td>{{ record.barcode }}</td>
+    </tr>
+</table>
+
+
+{% endblock %}
