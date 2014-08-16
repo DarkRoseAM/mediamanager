@@ -13,6 +13,13 @@ from django.db import models
 # =============================================================================
 
 
+class Upload(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+
+    class Meta:
+        ordering = ['-created_at']
+
+
 class File(models.Model):
     md5 = models.CharField(max_length=32, primary_key=True, editable=False)
 
@@ -46,10 +53,3 @@ class Record(models.Model):
     version = models.CharField(max_length=255, blank=True)
 
     upload = models.ForeignKey(Upload, related_name='records')
-
-
-class Upload(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-
-    class Meta:
-        ordering = ['-created_at']
