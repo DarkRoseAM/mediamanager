@@ -13,23 +13,26 @@ from . import models
 # =============================================================================
 
 
-class FileAdmin(admin.ModelAdmin):
+class MediaAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
     fields = (
-        'created_at',
-        'md5',
         'file',
         'upload',
     )
 
     list_display = [
         'created_at',
-        'md5',
         'file',
+        'md5',
     ]
 
     list_display_links = ['file']
+
+    list_filter = [
+        'created_at',
+        'file',
+    ]
 
 
 class RecordAdmin(admin.ModelAdmin):
@@ -45,6 +48,7 @@ class RecordAdmin(admin.ModelAdmin):
         'md5',
         'filename',
         'upload',
+        'manifest',
     )
 
     list_display = [
@@ -73,24 +77,20 @@ class RecordAdmin(admin.ModelAdmin):
 class UploadAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
-    fields = (
-        'records',
-        'files',
-    )
+    fields = ()
 
     list_display = [
         'created_at',
-        'manifest',
     ]
 
-    list_filter = []
-
-    search_fields = []
+    list_filter = [
+        'created_at',
+    ]
 
 # =============================================================================
 # EXECUTION
 # =============================================================================
 
-admin.site.register(models.File, FileAdmin)
+admin.site.register(models.Media, MediaAdmin)
 admin.site.register(models.Record, RecordAdmin)
 admin.site.register(models.Upload, UploadAdmin)

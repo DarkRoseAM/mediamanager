@@ -11,6 +11,6 @@ from django import forms
 
 
 class UploadForm(forms.Form):
-    manifest = forms.FileField(
-        label='Select a XML manifest file.',
+    file = forms.FileField(
+        label='Select a file.',
     )

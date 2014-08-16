@@ -3,21 +3,20 @@
 {% block page_title %} Manifests {% endblock %}
 
 {% block page_content %}
-    <!-- Upload form. Note enctype attribute! -->
     <form action="{% url "media:table" %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <p>{{ form.non_field_errors }}</p>
 
-        <p>{{ form.record.label_tag }} {{ form.record.help_text }}</p>
+        <p>{{ form.file.label_tag }} {{ form.file.help_text }}</p>
         <p>
-            {{ form.record.errors }}
-            {{ form.record }}
+            {{ form.file.errors }}
+            {{ form.file }}
         </p>
 
         <p><input type="submit" value="Upload" /></p>
 
         {% if test %}
-            {{ test }}
+            {{ test|linebreaks }}
         {% endif %}
 
 {% endblock %}

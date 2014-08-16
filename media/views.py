@@ -40,16 +40,13 @@ def table_view(request, *args, **kwargs):
         form = UploadForm(request.POST, request.FILES)
 
         if form.is_valid():
-            test = process_upload(request.FILES['record'])
+            test = process_upload([request.FILES['file']])
 
         #return HttpResponseRedirect(reverse('media:table'))
 
-    # A empty, unbound form.
-    form = UploadForm()
-
     # Load record for the list page.
     context = {
-        'form': form,
+        'form': UploadForm(),
         'test': test,
     }
 
