@@ -24,7 +24,7 @@ class MediaAdmin(admin.ModelAdmin):
     list_display = [
         'created_at',
         'file',
-        'md5',
+        'id',
     ]
 
     list_display_links = ['file']
@@ -39,6 +39,7 @@ class RecordAdmin(admin.ModelAdmin):
     date_hierarchy = 'releasedate'
 
     fields = (
+        'id',
         'title',
         'releasedate',
         'version',

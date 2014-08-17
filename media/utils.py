@@ -68,6 +68,20 @@ def _get_files_from_xml(input_string):
 
     return results
 
+
+def _get_model_instance(cls, *args, **kwargs):
+        # Create an instance of the model.
+        instance = cls(*args, **kwargs)
+
+        try:
+            # Is there an existing instance of the model?
+            instance = cls.objects.get(pk=instance.get_id())
+        except cls.DoesNotExist:
+            # Use the instance we just created.
+            instance.save()
+
+        return instance
+
 # =============================================================================
 # PUBLIC FUNCTIONS
 # =============================================================================
@@ -84,23 +98,18 @@ def process_upload(input_files):
         input_string = input_file.read()
 
         # Create Media model.
-        media = models.Media(
+        media = _get_model_instance(
+            models.Media,
             file=input_file,
             upload=upload,
         )
-
-        try:
-            # Use the existing Media model.
-            media = models.Media.objects.get(pk=media.get_md5())
-        except models.Media.DoesNotExist:
-            # This is new Media.  Use the model we just created.
-            media.save()
 
         if input_file.name.split('.')[-1].lower() in MANIFEST_TYPES:
             # Loop over the list of files from an XML manifest.
             for values in _get_files_from_xml(input_string):
                 # Create Record model.
-                record = models.Record(
+                _get_model_instance(
+                    models.Record,
                     barcode=values.get('barcode'),
                     contenttype=values.get('contenttype'),
                     manifest=media,
@@ -112,4 +121,3 @@ def process_upload(input_files):
                     upload=upload,
                     version=values.get('version'),
                 )
-                record.save()

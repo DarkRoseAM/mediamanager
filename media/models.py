@@ -21,7 +21,7 @@ class Upload(models.Model):
 
 
 class Media(models.Model):
-    md5 = models.CharField(max_length=32, primary_key=True, editable=False)
+    id = models.CharField(max_length=32, primary_key=True, editable=False)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     file = models.FileField(upload_to='media', null=True)
@@ -32,7 +32,7 @@ class Media(models.Model):
     # PUBLIC METHODS
     # =========================================================================
 
-    def get_md5(self):
+    def get_id(self):
         md5 = hashlib.md5()
 
         for chunk in self.file.chunks():
@@ -41,11 +41,13 @@ class Media(models.Model):
         return md5.hexdigest()
 
     def save(self, *args, **kwargs):
-        self.md5 = self.get_md5()
+        self.id = self.get_id()
         super(Media, self).save(*args, **kwargs)
 
 
 class Record(models.Model):
+    id = models.CharField(max_length=32, primary_key=True, editable=False)
+
     barcode = models.IntegerField()
     contenttype = models.CharField(max_length=255, blank=True)
     filename = models.CharField(max_length=255, blank=True)
@@ -57,3 +59,30 @@ class Record(models.Model):
 
     manifest = models.ForeignKey(Media, related_name='records')
     upload = models.ForeignKey(Upload, related_name='records')
+
+    # =========================================================================
+    # PUBLIC METHODS
+    # =========================================================================
+
+    def get_id(self):
+        properties = [
+            'barcode',
+            'contenttype',
+            'filename',
+            'language',
+            'md5',
+            'releasedate',
+            'title',
+            'version',
+        ]
+
+        md5 = hashlib.md5()
+
+        for prop in properties:
+            md5.update('{0}: {1},'.format(prop, getattr(self, prop)))
+
+        return md5.hexdigest()
+
+    def save(self, *args, **kwargs):
+        self.id = self.get_id()
+        super(Record, self).save(*args, **kwargs)

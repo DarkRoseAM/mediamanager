@@ -42,7 +42,7 @@ class Migration(SchemaMigration):
 
     def backwards(self, orm):
         # Deleting model 'File'
-        db.delete_table(u'media_file')
+        db.delete_table(u'media_media')
 
         # Deleting model 'Record'
         db.delete_table(u'media_record')
