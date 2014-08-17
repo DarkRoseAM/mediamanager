@@ -13,7 +13,7 @@ from . import models
 # =============================================================================
 
 
-class MediaAdmin(admin.ModelAdmin):
+class FileAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
 
     fields = (
@@ -39,7 +39,6 @@ class RecordAdmin(admin.ModelAdmin):
     date_hierarchy = 'releasedate'
 
     fields = (
-        'id',
         'title',
         'releasedate',
         'version',
@@ -48,7 +47,6 @@ class RecordAdmin(admin.ModelAdmin):
         'barcode',
         'md5',
         'filename',
-        'upload',
         'manifest',
     )
 
@@ -93,6 +91,7 @@ class UploadAdmin(admin.ModelAdmin):
 # EXECUTION
 # =============================================================================
 
-admin.site.register(models.Media, MediaAdmin)
+admin.site.register(models.ManifestFile, FileAdmin)
+admin.site.register(models.MediaFile, FileAdmin)
 admin.site.register(models.Record, RecordAdmin)
 admin.site.register(models.Upload, UploadAdmin)

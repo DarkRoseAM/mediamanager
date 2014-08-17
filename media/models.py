@@ -19,42 +19,15 @@ class Upload(models.Model):
     class Meta:
         ordering = ['-created_at']
 
-    # =========================================================================
-    # PUBLIC METHODS
-    # =========================================================================
 
-    def get_manifests(self):
-        results = []
-        for media in self.media:
-            if media.is_manifest():
-                results.append(media)
-
-        return results
-
-    def get_media(self):
-        results = []
-        for media in self.media:
-            if not media.is_manifest():
-                results.append(media)
-
-        return results
-
-
-class Media(models.Model):
+class BaseFile(models.Model):
     id = models.CharField(max_length=32, primary_key=True, editable=False)
-
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    file = models.FileField(upload_to='media', null=True)
-
-    upload = models.ManyToManyField(Upload, related_name='media')
+    file = models.FileField(upload_to='other')
 
     # =========================================================================
     # PUBLIC METHODS
     # =========================================================================
-
-    @models.permalink
-    def get_absolute_url(self):
-        return 'media:media', (), {'pk': self.pk}
 
     def get_id(self):
         md5 = hashlib.md5()
@@ -63,12 +36,33 @@ class Media(models.Model):
 
         return md5.hexdigest()
 
-    def is_manifest(self):
-        return self.records is not None
-
     def save(self, *args, **kwargs):
         self.id = self.get_id()
-        super(Media, self).save(*args, **kwargs)
+        super(BaseFile, self).save(*args, **kwargs)
+
+
+class ManifestFile(BaseFile):
+    upload = models.ManyToManyField(Upload, related_name='manifests')
+
+    # =========================================================================
+    # CONSTRUCTORS
+    # =========================================================================
+
+    def __init__(self, *args, **kwargs):
+        super(ManifestFile, self).__init__(*args, **kwargs)
+        self._meta.get_field('file').upload_to = 'manifest'
+
+
+class MediaFile(BaseFile):
+    upload = models.ManyToManyField(Upload, related_name='media')
+
+    # =========================================================================
+    # CONSTRUCTORS
+    # =========================================================================
+
+    def __init__(self, *args, **kwargs):
+        super(MediaFile, self).__init__(*args, **kwargs)
+        self._meta.get_field('file').upload_to = 'media'
 
 
 class Record(models.Model):
@@ -79,11 +73,11 @@ class Record(models.Model):
     filename = models.CharField(max_length=255, blank=True)
     language = models.CharField(max_length=255, blank=True)
     md5 = models.CharField(max_length=32, blank=True)
-    releasedate = models.DateField()
+    releasedate = models.DateField(null=True)
     title = models.CharField(max_length=255, blank=True)
     version = models.CharField(max_length=255, blank=True)
 
-    manifest = models.ManyToManyField(Media, related_name='records')
+    manifest = models.ManyToManyField(ManifestFile, related_name='records')
 
     # =========================================================================
     # PUBLIC METHODS

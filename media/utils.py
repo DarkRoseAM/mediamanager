@@ -13,12 +13,6 @@ from xml.etree import ElementTree
 from . import models
 
 # =============================================================================
-# GLOBALS
-# =============================================================================
-
-MANIFEST_TYPES = ['xml']
-
-# =============================================================================
 # PRIVATE FUNCTIONS
 # =============================================================================
 
@@ -51,13 +45,13 @@ def _get_files_from_xml(input_string):
     results = []
 
     # Loop over each of the children in the ElementTree.
-    for file_element in element_tree.getchildren():
+    for file_element in list(element_tree):
         # Ensure that they are files.
         if file_element.tag == 'file':
             values = {}
 
             # Loop over each of the keys in the file.
-            for element in file_element.getchildren():
+            for element in list(file_element):
                 # Add the key and its text value to the values dictionary.
                 values[element.tag] = element.text
 
@@ -90,34 +84,41 @@ def _get_model_instance(cls, *args, **kwargs):
 def process_upload(input_files):
     """ Create the necessary database entries from the given manifest file.
     """
-    # Create Upload model.
+    # Create Upload.
     upload = models.Upload()
     upload.save()
 
     for input_file in input_files:
-        input_string = input_file.read()
+        if input_file.name.split('.')[-1].lower() == 'xml':
+            input_string = input_file.read()
 
-        # Create Media model.
-        media = _get_model_instance(
-            models.Media,
-            file=input_file,
-            upload=upload,
-        )
+            # Create ManifestFile.
+            manifest = _get_model_instance(
+                models.ManifestFile,
+                file=input_file,
+            )
+            upload.manifests.add(manifest)
 
-        if input_file.name.split('.')[-1].lower() in MANIFEST_TYPES:
             # Loop over the list of files from an XML manifest.
             for values in _get_files_from_xml(input_string):
-                # Create Record model.
+                # Create Record.
                 record = _get_model_instance(
                     models.Record,
                     barcode=values.get('barcode'),
                     contenttype=values.get('contenttype'),
-                    manifest=media,
                     filename=values.get('filename'),
                     language=values.get('language'),
                     md5=values.get('md5'),
                     releasedate=values.get('releasedate'),
                     title=values.get('title'),
-                    upload=upload,
                     version=values.get('version'),
                 )
+                manifest.records.add(record)
+
+        else:
+            # Create MediaFile.
+            media = _get_model_instance(
+                models.MediaFile,
+                file=input_file,
+            )
+            upload.media.add(media)

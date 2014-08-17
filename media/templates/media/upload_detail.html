@@ -4,33 +4,33 @@
 
 {% block page_content %}
 
-<h4>Created:</h4>
+<h4>Upload from:</h4>
 {{ upload.created_at }}
 
 <p>
 <p>
-    Record(s):
-    {% if upload.records %}
-        <ul>
-        {% for record in upload.records.all %}
-            <li><a href="{{ record.get_absolute_url }}">
-                {{ record.title }}</a></li>
-
+    Manifest(s):
+    <ul>
+    {% for manifest in upload.manifests.all %}
+        <li><a href="{{ manifest.file.url }}">{{ manifest.file.name }}</a></li>
+        {% for record in manifest.records.all %}
+            <li><a href="{{ record.get_absolute_url }}">{{ record.title }}</a></li>
+        {% empty %}
+            <li>No Records in this Manifest.</li>
         {% endfor %}
-        </ul>
-
-    {% endif %}
+    {% empty %}
+        <li>No Manifest files in this upload.</li>
+    {% endfor %}
+    </ul>
 
 <p>
     Media File(s):
-    {% if upload.media %}
-        <ul>
-        {% for media in upload.media.all %}
-            <li><a href="{{ media.file.url }}">{{ media.file.name }}</a></li>
-
-        {% endfor %}
-        </ul>
-
-    {% endif %}
+    <ul>
+    {% for media in upload.media.all %}
+        <li><a href="{{ media.file.url }}">{{ media.file.name }}</a></li>
+    {% empty %}
+        <li>No Media files in this upload.</li>
+    {% endfor %}
+    </ul>
 
 {% endblock %}
