@@ -81,6 +81,7 @@ class UploadAdmin(admin.ModelAdmin):
     fields = ()
 
     list_display = [
+        'pk',
         'created_at',
     ]
 

@@ -7,8 +7,30 @@
 <h4>Created:</h4>
 {{ upload.created_at }}
 
-<h4>Manifest File:</h4>
-<a href="{{ upload.record.get_absolute_url }}">
-    {{ upload.record.file }}</a>
+<p>
+<p>
+    Record(s):
+    {% if upload.records %}
+        <ul>
+        {% for record in upload.records.all %}
+            <li><a href="{{ record.get_absolute_url }}">
+                {{ record.title }}</a></li>
+
+        {% endfor %}
+        </ul>
+
+    {% endif %}
+
+<p>
+    Media File(s):
+    {% if upload.media %}
+        <ul>
+        {% for media in upload.media.all %}
+            <li><a href="{{ media.file.url }}">{{ media.file.name }}</a></li>
+
+        {% endfor %}
+        </ul>
+
+    {% endif %}
 
 {% endblock %}

@@ -108,7 +108,7 @@ def process_upload(input_files):
             # Loop over the list of files from an XML manifest.
             for values in _get_files_from_xml(input_string):
                 # Create Record model.
-                _get_model_instance(
+                record = _get_model_instance(
                     models.Record,
                     barcode=values.get('barcode'),
                     contenttype=values.get('contenttype'),

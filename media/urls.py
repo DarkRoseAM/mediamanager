@@ -19,7 +19,11 @@ urlpatterns = patterns(
         views.table_view,
         name='table',
     ),
-
+    url(
+        r'^record/(?P<pk>[\w-]+)/$',
+        views.RecordDetailView.as_view(),
+        name='record',
+    ),
     url(
         r'^upload/(?P<pk>\d+)/$',
         views.UploadDetailView.as_view(),
