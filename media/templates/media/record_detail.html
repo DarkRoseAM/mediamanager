@@ -3,10 +3,11 @@
 {% block page_title %} Record | {% endblock %}
 
 {% block page_content %}
+<p><a href="{% url 'media:table' %}">&larr; All Uploads</a></p>
 
 <h4>{{ record.title }}</h4>
 
-<table>
+<table class="tg">
     <tr>
         <th>Content Type:</th>
         <td>{{ record.contenttype }}</td>
@@ -29,7 +30,13 @@
     </tr>
     <tr>
         <th>File Name:</th>
-        <td>{{ record.filename }}</td>
+        {% if record.media.file %}
+            <td>
+                <a href="{{ record.media.file.url }}">{{ record.filename }}</a>
+            </td>
+        {% else %}
+            <td>{{ record.filename }}: Not available.</td>
+        {% endif %}
     </tr>
     <tr>
         <th>MD5:</th>

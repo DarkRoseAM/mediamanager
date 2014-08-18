@@ -8,9 +8,6 @@ from django.conf.urls import include, patterns, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-# Application Imports
-from . import views
-
 # =============================================================================
 # EXECUTION
 # =============================================================================
@@ -19,7 +16,7 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.HomepageView.as_view(), name='home'),
+    url(r'^$', include('media.urls', namespace='media')),
     url(r'^media/', include('media.urls', namespace='media')),
     url(r'^admin/', include(admin.site.urls)),
 )

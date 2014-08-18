@@ -19,9 +19,17 @@ class Upload(models.Model):
     class Meta:
         ordering = ['-created_at']
 
+    # =========================================================================
+    # PUBLIC METHODS
+    # =========================================================================
+
+    @models.permalink
+    def get_absolute_url(self):
+        return 'media:upload', (), {'pk': self.pk}
+
 
 class BaseFile(models.Model):
-    id = models.CharField(max_length=32, primary_key=True, editable=False)
+    id = models.CharField(max_length=255, primary_key=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     file = models.FileField(upload_to='other')
 
@@ -66,18 +74,19 @@ class MediaFile(BaseFile):
 
 
 class Record(models.Model):
-    id = models.CharField(max_length=32, primary_key=True, editable=False)
+    id = models.CharField(max_length=255, primary_key=True, editable=False)
 
     barcode = models.IntegerField()
     contenttype = models.CharField(max_length=255, blank=True)
     filename = models.CharField(max_length=255, blank=True)
     language = models.CharField(max_length=255, blank=True)
-    md5 = models.CharField(max_length=32, blank=True)
+    md5 = models.CharField(max_length=255, blank=True)
     releasedate = models.DateField(null=True)
     title = models.CharField(max_length=255, blank=True)
     version = models.CharField(max_length=255, blank=True)
 
     manifest = models.ManyToManyField(ManifestFile, related_name='records')
+    media = models.ForeignKey(MediaFile, related_name='records', null=True)
 
     # =========================================================================
     # PUBLIC METHODS

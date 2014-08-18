@@ -3,34 +3,65 @@
 {% block page_title %} Upload | {% endblock %}
 
 {% block page_content %}
+<p><a href="{% url 'media:table' %}">&larr; All Uploads</a></p>
 
 <h4>Upload from:</h4>
 {{ upload.created_at }}
 
 <p>
 <p>
-    Manifest(s):
-    <ul>
+<h4>Manifest(s):</h4>
     {% for manifest in upload.manifests.all %}
-        <li><a href="{{ manifest.file.url }}">{{ manifest.file.name }}</a></li>
+        <table class="tg">
+        <tr>
+            <th>
+                <a href="{{ manifest.file.url }}">{{ manifest.file.name }}</a>
+            </th>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <th>Content Type</th>
+            <th>Version</th>
+            <th>Release Date</th>
+            <th>Language</th>
+            <th>File</th>
+        </tr>
         {% for record in manifest.records.all %}
-            <li><a href="{{ record.get_absolute_url }}">{{ record.title }}</a></li>
+            <tr>
+                <td>
+                    <a href="{{ record.get_absolute_url }}">{{ record.title }}</a>
+                </td>
+                <td>{{ record.contenttype }}</td>
+                <td>{{ record.version }}</td>
+                <td>{{ record.releasedate }}</td>
+                <td>{{ record.language }}</td>
+                {% if record.media.file %}
+                    <td>
+                        <a href="{{ record.media.file.url }}">{{ record.filename }}</a>
+                    </td>
+                {% else %}
+                    <td>{{ record.filename }}: Not available.</td>
+                {% endif %}
+            </tr>
         {% empty %}
-            <li>No Records in this Manifest.</li>
+            <tr>
+                <td>
+                    No Records in this Manifest.
+                </td>
+            </tr>
         {% endfor %}
+        </table>
+
     {% empty %}
         <li>No Manifest files in this upload.</li>
     {% endfor %}
-    </ul>
 
 <p>
-    Media File(s):
-    <ul>
+<h4>Media File(s):</h4>
     {% for media in upload.media.all %}
         <li><a href="{{ media.file.url }}">{{ media.file.name }}</a></li>
     {% empty %}
         <li>No Media files in this upload.</li>
     {% endfor %}
-    </ul>
 
 {% endblock %}

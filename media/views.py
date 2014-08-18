@@ -3,7 +3,6 @@
 # =============================================================================
 
 # Django Imports
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -34,20 +33,18 @@ class UploadDetailView(DetailView):
 def table_view(request, *args, **kwargs):
     template_name = 'media_table.html'
 
-    test = None
     # Handle file upload.
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
 
         if form.is_valid():
-            test = process_upload([request.FILES['file']])
+            upload = process_upload([request.FILES['file']])
 
-        #return HttpResponseRedirect(reverse('media:table'))
+        return HttpResponseRedirect(upload.get_absolute_url())
 
     # Load record for the list page.
     context = {
         'form': UploadForm(),
-        'test': test,
     }
 
     # Render list page with the record and the form.

@@ -48,6 +48,7 @@ class RecordAdmin(admin.ModelAdmin):
         'md5',
         'filename',
         'manifest',
+        'media',
     )
 
     list_display = [

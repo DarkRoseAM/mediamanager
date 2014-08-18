@@ -34,6 +34,20 @@ def _convert_date(values):
             values[field] = dt.strftime('%Y-%m-%d')
 
 
+def _create_model_instance(cls, *args, **kwargs):
+        # Create an instance of the model.
+        instance = cls(*args, **kwargs)
+
+        try:
+            # Is there an existing instance of the model?
+            instance = cls.objects.get(pk=instance.get_id())
+        except cls.DoesNotExist:
+            # Use the instance we just created.
+            instance.save()
+
+        return instance
+
+
 def _get_files_from_xml(input_string):
     """ Get a list of files from an XML manifest.
     """
@@ -63,18 +77,13 @@ def _get_files_from_xml(input_string):
     return results
 
 
-def _get_model_instance(cls, *args, **kwargs):
-        # Create an instance of the model.
-        instance = cls(*args, **kwargs)
+def _get_model_instances(cls, *args, **kwargs):
+    try:
+        # Is there an existing instance of the model?
+        return cls.objects.filter(*args, **kwargs)
+    except cls.DoesNotExist:
+        return None
 
-        try:
-            # Is there an existing instance of the model?
-            instance = cls.objects.get(pk=instance.get_id())
-        except cls.DoesNotExist:
-            # Use the instance we just created.
-            instance.save()
-
-        return instance
 
 # =============================================================================
 # PUBLIC FUNCTIONS
@@ -93,7 +102,7 @@ def process_upload(input_files):
             input_string = input_file.read()
 
             # Create ManifestFile.
-            manifest = _get_model_instance(
+            manifest = _create_model_instance(
                 models.ManifestFile,
                 file=input_file,
             )
@@ -102,7 +111,7 @@ def process_upload(input_files):
             # Loop over the list of files from an XML manifest.
             for values in _get_files_from_xml(input_string):
                 # Create Record.
-                record = _get_model_instance(
+                record = _create_model_instance(
                     models.Record,
                     barcode=values.get('barcode'),
                     contenttype=values.get('contenttype'),
@@ -115,10 +124,30 @@ def process_upload(input_files):
                 )
                 manifest.records.add(record)
 
+                media = _get_model_instances(
+                    models.MediaFile,
+                    id=values.get('md5'),
+                )
+                if media:
+                    record.media = media[0]
+                    record.save()
+
         else:
             # Create MediaFile.
-            media = _get_model_instance(
+            media = _create_model_instance(
                 models.MediaFile,
                 file=input_file,
             )
             upload.media.add(media)
+
+            records = _get_model_instances(
+                models.Record,
+                md5=media.get_id(),
+            )
+
+            if records:
+                for record in records:
+                    record.media = media
+                    record.save()
+
+    return upload
