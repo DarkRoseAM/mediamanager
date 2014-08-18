@@ -40,11 +40,12 @@ def table_view(request, *args, **kwargs):
         if form.is_valid():
             upload = process_upload([request.FILES['file']])
 
-        return HttpResponseRedirect(upload.get_absolute_url())
+            return HttpResponseRedirect(upload.get_absolute_url())
 
     # Load record for the list page.
     context = {
         'form': UploadForm(),
+        'uploads': models.Upload.objects.all(),
     }
 
     # Render list page with the record and the form.

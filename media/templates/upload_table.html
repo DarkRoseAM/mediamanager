@@ -1,0 +1,69 @@
+{% if verbose %}
+    <h4>Upload from:</h4>
+    {{ upload.created_at }}
+{% endif %}
+
+{% if verbose %}
+    <h4>Manifest(s):</h4>
+{% endif %}
+
+    {% for manifest in upload.manifests.all %}
+        <table class="tg">
+        <tr>
+            <th>
+                <a href="{{ manifest.file.url }}">{{ manifest.file.name }}</a>
+            </th>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <th>Content Type</th>
+            <th>Version</th>
+            <th>Release Date</th>
+            <th>Language</th>
+            <th>File</th>
+        </tr>
+        {% for record in manifest.records.all %}
+            <tr>
+                <td>
+                    <a href="{{ record.get_absolute_url }}">{{ record.title }}</a>
+                </td>
+                <td>{{ record.contenttype }}</td>
+                <td>{{ record.version }}</td>
+                <td>{{ record.releasedate }}</td>
+                <td>{{ record.language }}</td>
+                {% if record.media.file %}
+                    <td>
+                        <a href="{{ record.media.file.url }}">{{ record.filename }}</a>
+                    </td>
+                {% else %}
+                    <td>{{ record.filename }}: Not available.</td>
+                {% endif %}
+            </tr>
+        {% empty %}
+            {% if verbose %}
+                <tr>
+                    <td>
+                        No Records in this Manifest.
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+
+    {% empty %}
+        {% if verbose %}
+            <li>No Manifest files in this upload.</li>
+        {% endif %}
+    {% endfor %}
+
+{% if verbose %}
+    <h4>Media File(s):</h4>
+{% endif %}
+
+    {% for media in upload.media.all %}
+        <li><a href="{{ media.file.url }}">{{ media.file.name }}</a></li>
+    {% empty %}
+        {% if verbose %}
+            <li>No Media files in this upload.</li>
+        {% endif %}
+    {% endfor %}

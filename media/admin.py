@@ -52,6 +52,7 @@ class RecordAdmin(admin.ModelAdmin):
     )
 
     list_display = [
+        'id',
         'title',
         'releasedate',
         'version',

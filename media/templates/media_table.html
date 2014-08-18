@@ -3,20 +3,25 @@
 {% block page_title %} Manifests {% endblock %}
 
 {% block page_content %}
-    <form action="{% url "media:table" %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <p>{{ form.non_field_errors }}</p>
+<form action="{% url "media:table" %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>{{ form.non_field_errors }}</p>
 
-        <p>{{ form.file.label_tag }} {{ form.file.help_text }}</p>
-        <p>
-            {{ form.file.errors }}
-            {{ form.file }}
-        </p>
+    <p>{{ form.file.label_tag }} {{ form.file.help_text }}</p>
+    <p>
+        {{ form.file.errors }}
+        {{ form.file }}
+    </p>
 
-        <p><input type="submit" value="Upload" /></p>
+    <p><input type="submit" value="Upload" /></p>
 
-        {% if test %}
-            {{ test|linebreaks }}
-        {% endif %}
+{% for upload in uploads %}
+    {{ upload }}
+    {% include "upload_table.html" with upload=upload verbose="true" %}
+
+{% empty %}
+    No available uploads.
+
+{% endfor %}
 
 {% endblock %}
