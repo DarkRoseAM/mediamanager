@@ -9,19 +9,7 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Deleting model 'BaseFile'
-        db.delete_table(u'media_basefile')
-
-        # Deleting model 'ManifestFile'
-        db.delete_table(u'media_manifestfile')
-
-        # Deleting model 'MediaFile'
-        db.delete_table(u'media_mediafile')
-
-        # Deleting model 'Record'
-        #db.delete_table(u'media_record')
-
-        # Deleting model 'Upload'
-        db.delete_table(u'media_upload')
+        db.delete_table(u'media_media')
 
     def backwards(self, orm):
         pass
