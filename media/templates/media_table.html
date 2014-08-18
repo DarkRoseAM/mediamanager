@@ -3,6 +3,14 @@
 {% block page_title %} Manifests {% endblock %}
 
 {% block page_content %}
+<table class="tg" width="100%">
+    <tr>
+        <th>
+            <h4>Select a file to upload.</h4>
+        </th>
+    </tr>
+</table>
+
 <form action="{% url "media:table" %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <p>{{ form.non_field_errors }}</p>
@@ -15,12 +23,20 @@
 
     <p><input type="submit" value="Upload" /></p>
 
+<br><br>
+<table class="tg" width="100%">
+    <tr>
+        <th>
+            <h4>Upload History</h4>
+        </th>
+    </tr>
+</table>
+
 {% for upload in uploads %}
-    {{ upload }}
-    {% include "upload_table.html" with upload=upload verbose="true" %}
+    {% include "upload_table.html" with upload=upload %}
 
 {% empty %}
-    No available uploads.
+    No previous uploads.
 
 {% endfor %}
 

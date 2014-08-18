@@ -1,26 +1,28 @@
+<br><br>
 {% if verbose %}
-    <h4>Upload from:</h4>
-    {{ upload.created_at }}
+    <h4>Uploaded:</h4>
+{% else %}
+    Uploaded:
 {% endif %}
 
+{{ upload.created_at }}
+
 {% if verbose %}
+    <br><br>
     <h4>Manifest(s):</h4>
 {% endif %}
 
     {% for manifest in upload.manifests.all %}
-        <table class="tg">
+        <li><a href="{{ manifest.file.url }}">{{ manifest.file.name }}</a></li>
+
+        <table class="tg" width="100%">
         <tr>
-            <th>
-                <a href="{{ manifest.file.url }}">{{ manifest.file.name }}</a>
-            </th>
-        </tr>
-        <tr>
-            <th>Title</th>
-            <th>Content Type</th>
-            <th>Version</th>
-            <th>Release Date</th>
-            <th>Language</th>
-            <th>File</th>
+            <th width="20%">Title</th>
+            <th width="15%">Content Type</th>
+            <th width="15%">Version</th>
+            <th width="20%">Release Date</th>
+            <th width="10%">Language</th>
+            <th width="20%">File</th>
         </tr>
         {% for record in manifest.records.all %}
             <tr>
@@ -36,7 +38,7 @@
                         <a href="{{ record.media.file.url }}">{{ record.filename }}</a>
                     </td>
                 {% else %}
-                    <td>{{ record.filename }}: Not available.</td>
+                    <td>Not Available:<br>{{ record.filename }}</td>
                 {% endif %}
             </tr>
         {% empty %}
@@ -57,6 +59,7 @@
     {% endfor %}
 
 {% if verbose %}
+    <br><br>
     <h4>Media File(s):</h4>
 {% endif %}
 

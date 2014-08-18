@@ -16,7 +16,7 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^$', include('media.urls', namespace='media')),
+    url(r'^$', include('media.urls', namespace='home')),
     url(r'^media/', include('media.urls', namespace='media')),
     url(r'^admin/', include(admin.site.urls)),
 )
