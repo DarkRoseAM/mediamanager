@@ -2,11 +2,19 @@
 # IMPORTS
 # =============================================================================
 
-# Import
+# Third-Party Import
 import hashlib
+from pytz import timezone
 
 # Django Imports
 from django.db import models
+
+# =============================================================================
+# GLOBALS
+# =============================================================================
+
+FORMAT = '%Y-%m-%d %H:%M:%S'
+LOCAL = timezone('US/Pacific')
 
 # =============================================================================
 # CLASSES
@@ -26,6 +34,9 @@ class Upload(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return 'media:upload', (), {'pk': self.pk}
+
+    def local_time(self):
+        return self.created_at.astimezone(LOCAL).strftime(FORMAT)
 
 
 class BaseFile(models.Model):

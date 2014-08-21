@@ -3,7 +3,6 @@
 # =============================================================================
 
 # Django Imports
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic import DetailView
@@ -35,12 +34,7 @@ def table_view(request, *args, **kwargs):
 
     # Handle file upload.
     if request.method == 'POST':
-        form = UploadForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            upload = process_upload([request.FILES['file']])
-
-            #return HttpResponseRedirect(upload.get_absolute_url())
+        process_upload(request.FILES.values())
 
     # Load record for the list page.
     context = {

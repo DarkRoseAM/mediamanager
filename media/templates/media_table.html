@@ -13,12 +13,36 @@
 
 <form action="{% url "media:table" %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>{{ form.non_field_errors }}</p>
 
-    <p>{{ form.file.label_tag }} {{ form.file.help_text }}</p>
+    <p>{{ form.non_field_errors }}</p>
+    <p>{{ form.file0.label_tag }} {{ form.file0.help_text }}</p>
     <p>
-        {{ form.file.errors }}
-        {{ form.file }}
+        {{ form.file0.errors }}
+        {{ form.file0 }}
+    </p>
+
+    <p>{{ form.file1.label_tag }} {{ form.file1.help_text }}</p>
+    <p>
+        {{ form.file1.errors }}
+        {{ form.file1 }}
+    </p>
+
+    <p>{{ form.file2.label_tag }} {{ form.file2.help_text }}</p>
+    <p>
+        {{ form.file2.errors }}
+        {{ form.file2 }}
+    </p>
+
+    <p>{{ form.file3.label_tag }} {{ form.file3.help_text }}</p>
+    <p>
+        {{ form.file3.errors }}
+        {{ form.file3 }}
+    </p>
+
+    <p>{{ form.file4.label_tag }} {{ form.file4.help_text }}</p>
+    <p>
+        {{ form.file4.errors }}
+        {{ form.file4 }}
     </p>
 
     <p><input type="submit" value="Upload" /></p>
