@@ -56,6 +56,7 @@ DJANGO_APPS = (
 
 THIRD_PARTY_APPS = (
     'south',
+    'storages',
 )
 
 LOCAL_APPS = (
@@ -93,9 +94,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Amazon Web Service
+AWS_ACCESS_KEY_ID = 'AKIAJLEQYNNMCYNQ56YQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'tremediamanager'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
 # Structure
-MEDIA_ROOT = root('..', 'uploads')
-MEDIA_URL = '/uploads/'
+MEDIA_ROOT = 'http://s3.amazonaws.com/{0}/'.format(AWS_STORAGE_BUCKET_NAME)
+MEDIA_URL = MEDIA_ROOT
 
 STATIC_ROOT = root('..', 'static')
 STATIC_URL = '/static/'
