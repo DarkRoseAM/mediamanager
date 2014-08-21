@@ -102,8 +102,8 @@ AWS_STORAGE_BUCKET_NAME = 'tremediamanager'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 # Structure
-MEDIA_ROOT = 'http://s3.amazonaws.com/{0}/'.format(AWS_STORAGE_BUCKET_NAME)
-MEDIA_URL = MEDIA_ROOT
+MEDIA_ROOT = ''
+MEDIA_URL = 'http://s3.amazonaws.com/{0}/'.format(AWS_STORAGE_BUCKET_NAME)
 
 STATIC_ROOT = root('..', 'static')
 STATIC_URL = '/static/'
